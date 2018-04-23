@@ -1,0 +1,75 @@
+<header class="main-header">
+    <!-- Logo -->
+    <a href="javasscript:;" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>KOOFABACK</b></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>쿠퍼실리테이션-BackOffice</b></span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="pull-right" style="margin-top: 0.8%;">
+						<span class="logo-min" id="userId" style="color: white; margin-right:4px;">{{userInfo.name}} ({{userInfo.loginId}})</span>
+						<button type="button" class="btn btn-primary btn-flat" style="background-color:#150d9b;" (click)="passwordChangeModal.show()">비밀번호 변경</button>
+						<a class="btn btn-primary btn-flat" (click)="logout()" style="background-color:#150d9b;">로그 아웃</a>						
+        </div>
+    </nav>
+    
+
+    <div bsModal #passwordChangeModal="bs-modal" class="modal fade" [config]="{backdrop: '', ignoreBackdropClick:false}" (onHidden)="initModalData()" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form [formGroup]="passwordForm">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="passwordChangeModal.hide()">&times;</button>
+                <h4 class="modal-title">▶ 비밀번호 변경</h4>
+            </div>
+
+            <div class="modal-body">
+              <table style="margin-left: 10%;">
+                <tr>
+                  <td>
+                    <label>현재 비밀번호</label>
+                    </td>
+                  <td>
+                    <input type="hidden" formControlName="userId" />
+                    <input type="password" formControlName="currentPassword" class="form-control" style="margin-left: 10%;width: 200%;" placeholder="현재 비밀번호를 입력해주세요."/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label style="margin-top: 5px;">새로운 비밀번호</label>
+                    </td>
+                  <td>
+                    <input type="password" formControlName="newPassword" class="form-control" style="margin-left: 10%;width: 200%; margin-top: 5px;" placeholder="새로운 비밀번호를 입력해주세요."/>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <label style="margin-top: 5px;">새로운 비밀번호 확인</label>
+                    </td>
+                  <td>
+                    <input type="password" formControlName="cfrmPassword" class="form-control" style="margin-left: 10%;width: 200%; margin-top: 5px;" placeholder="새로운 비밀번호를 입력해주세요."/>
+                  </td>
+                </tr>
+              </table>
+              <div>
+                <label style="text-align:center;margin:auto;width:100%;color: #ff0000">※ 비밀번호는 특수문자 포함 8자 이상 입력해주세요.</label>
+                <label style="text-align:center;margin:auto;width:100%;color: #ff0000">(특수문자가 1자 이상 포함되어야 합니다)</label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="changePassword()">변경하기</button>
+              <button type="button" class="btn btn-default" (click)="passwordChangeModal.hide()">취소</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>

@@ -1,0 +1,25 @@
+<div style="border:solid 1px lightgrey;margin:0px;padding:0px;background:#ffffff;">
+    <table class="table" style="margin-bottom:0px;">
+        <tbody>
+            <tr role="row">
+                <th class="col-sm-2 text-center">{{title}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <div style="overflow-y:auto;height:133px;vertical-align: middle;">                
+        <table class="table" style="margin-bottom:0px;">
+            <tbody>   
+                <tr role="row" *ngFor="let item of list;let i = index;">
+                    <td class="col-sm-1">
+                        <label style="margin-left:20px;width:97%;">
+                            <div style="width:80%;display:inline-block;">{{item.title}}</div>
+                            <div style="width:15%;display:inline-block;">
+                                <input type="checkbox" [checked]="item.checked" (change)="check(item)"/>
+                            </div>
+                        </label>
+                    </td>
+                </tr>        
+            </tbody>                                                    
+        </table>
+    </div>                
+</div>

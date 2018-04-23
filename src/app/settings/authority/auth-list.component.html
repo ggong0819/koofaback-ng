@@ -1,0 +1,88 @@
+<form [formGroup]="searchForm" class="form-horizontal">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">검색</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr role="row">
+                        <th class="col-sm-2 text-center odd" style="vertical-align: middle;">사용 여부</th>
+                        <td>
+                            <div class="form-froup radio" style="padding-top:3px;">
+                                <label style="margin-right:10px;">
+                                    <input formControlName="displayYn" type="radio"  value=""/>전체
+                                </label>
+                                <label style="margin-right:10px;">
+                                    <input formControlName="displayYn" type="radio"  value="Y"/>노출
+                                </label>
+                                <label style="margin-right:10px;">
+                                    <input formControlName="displayYn" type="radio"  value="N"/>미노출
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr role="row">
+                        <th class="col-sm-2 text-center odd" style="vertical-align: middle;">권한 명</th>
+                        <td colspan="3">
+                            <input formControlName="authName" type="text" value="1" class="form-control" placeholder="검색어를 입력하세요"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="searchSubmit()">검색</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="box">
+    <div class="box-header pull-right">
+        <button type="button" class="btn btn-primary" (click)="goRegist()">권한 신규등록</button>
+        <div class="pull-right" style = "margin-left: 3px">
+            <select class="form-control" [(ngModel)]="realListSize" (change)="searchSubmit()" >
+                <option value=10>10개씩 보기</option>
+                <option value=20>20개씩 보기</option>
+                <option value=30>30개씩 보기</option>
+            </select>
+        </div>
+    </div>
+    <div class="box-body">
+        <table class="table table-bordered table-hover dataTable" role="grid">
+            <thead>
+                <tr role="row">
+                    <th class="col-sm-1 text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">No</th>
+                    <th class="col-sm-4 text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">권한명</th>
+                    <th class="col-sm-3 text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">삭제권한</th>
+                    <th class="col-sm-1 text-center" tabindex="0" aria-controls="example2" rowspan="1" colspan="1">사용 여부</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center" *ngIf="results.length==0">
+                    <td colspan="10">검색된 내용이 없습니다.</td>
+                </tr>
+                <tr role="row" *ngFor="let result of results | paginate: { itemsPerPage: listSize, currentPage: pageNo, totalItems: totalCnt };let i = index;">
+                    <td class="col-sm-1 text-center">{{totalCnt - ((pageNo-1)*listSize+i)}}</td>
+                    <td class="col-sm-3 text-center"><a href="javascript:;" (click)="goDetail(result.authId)">{{result.authName}}</a></td>
+                    <td class="col-sm-3 text-center" *ngIf="result.authDel == 'Y'">
+                        삭제가능
+                    </td>
+                    <td class="col-sm-3 text-center" *ngIf="result.authDel == 'N'">
+                        삭제 불가능
+                    </td>
+                    <td class="col-sm-1 text-center" *ngIf="result.displayYn == 'Y'">
+                        사용
+                    </td>
+                    <td class="col-sm-1 text-center" *ngIf="result.displayYn == 'N'">
+                        미사용
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer text-center">            
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>

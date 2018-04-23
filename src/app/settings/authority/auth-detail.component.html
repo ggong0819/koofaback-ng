@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div id="boxDiv1" class="box">
+            <form [formGroup]="insertForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="box-header">
+                    <h3 class="box-title">수정 및 상세보기</h3>
+                    <div class="help-block pull-right">*필수입력</div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr role="row">
+                                <th class="col-sm-2 text-center odd" style="vertical-align: middle;">권한 명*</th>
+                                <td [attr.colspan]="mergeColspan">
+                                    <div *ngIf="menuType == 'detail'">
+                                        <input type="hidden" class="form-control" formControlName="authId" value="{{authority.authId}}" required/>
+                                        <input type="text" class="form-control" formControlName="authName" value="{{authority.authName}}" required/>
+                                    </div>
+                                    <div *ngIf="menuType == 'insert'">
+                                        <input type="text" class="form-control" formControlName="authName" *ngIf="menuType == 'insert'"  required/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <th class="text-center" style="vertical-align: middle;">삭제권한*</th>
+                                <td  [attr.colspan]="mergeColspan">
+                                    <div class="radio">
+                                        <label style="margin-right:10px;">
+                                            <input formControlName="authDel" type="radio" value="Y"/>삭제 가능
+                                        </label>
+                                        <label>
+                                            <input formControlName="authDel" type="radio" value="N"/>삭제 불가능
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <th class="text-center" style="vertical-align: middle;">사용 여부*</th>
+                                <td  [attr.colspan]="mergeColspan">
+                                    <div class="radio">
+                                        <label style="margin-right:10px;">
+                                            <input formControlName="displayYn" type="radio" value="Y"/>사용
+                                        </label>
+                                        <label>
+                                            <input formControlName="displayYn" type="radio" value="N"/>미사용
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr role="row" *ngIf="menuType == 'detail' && authority !== undefined">
+                                <th class="text-center" style="vertical-align: middle;">등록자</th>
+                                <td class="col-sm-2">
+                                    {{authority.regName}}
+                                </td>
+                                <th class="col-sm-2 text-center" style="vertical-align: middle;">수정자</th>
+                                <td class="col-sm-2">
+                                    {{authority.modfName}}
+                                </td>
+                            </tr>
+                            <tr role="row" *ngIf="menuType == 'detail' && authority !== undefined">
+                                <th class="text-center" style="vertical-align: middle;">등록IP</th>
+                                <td class="col-sm-2">
+                                    {{authority.regIp}}
+                                </td>
+                                <th class="col-sm-2 text-center" style="vertical-align: middle;">수정IP</th>
+                                <td class="col-sm-2">
+                                    {{authority.modfIp}}
+                                </td>
+                            </tr>
+                            <tr role="row" *ngIf="menuType == 'detail' && authority !== undefined">
+                                <th class="text-center" style="vertical-align: middle;">등록일</th>
+                                <td class="col-sm-2">
+                                    {{authority.regDt | date:'yyyy-MM-dd HH:mm:ss'}}
+                                </td>
+                                <th class="col-sm-2 text-center" style="vertical-align: middle;">수정일</th >
+                                <td class="col-sm-2">
+                                    {{authority.modfDt | date:'yyyy-MM-dd HH:mm:ss'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <br>
+                    <h4>※ 접근 메뉴 관리</h4>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr role="row" *ngFor='let menu of topMenuList'>
+                                <td class="col-sm-2 odd" style="vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <label style="margin-right:10px;">
+                                            <input type="checkbox" value="{{menu.menuId}}" attr.parentMenuId="{{menu.parentMenuId}}" (click)="checkMenu($event.target)" class="auth-menu"  [checked]="menu.isHave"/>&nbsp;&nbsp;{{menu.menuName}}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="col-sm-10" style="vertical-align: middle;">
+                                    <div class="checkbox">
+                                        <auth-menu-tree [allMenuList] ="menuList" [menuList]="menuList[menu.menuId]"></auth-menu-tree>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">저장</button>
+                        <button id="listBtn" type="button" class="btn btn-default" (click)="goList()">목록</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

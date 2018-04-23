@@ -1,0 +1,28 @@
+<!-- 트리 뷰 페이지 시공교육 최광윤 -->
+<div>
+    <div *ngIf="node.childList != null && node.childList.length > 0" style="margin-left:20px;">
+        <label class="fa fa-caret-right" *ngIf="!node.isOpened" (click)="node.setOpen(true)"></label>
+        <label class="fa fa-caret-down" *ngIf="node.isOpened" (click)="node.setOpen(false)"></label>
+        <span class="text" style="background-color: #C8C8C8" (click)="selectNode(node)" *ngIf="node.isSelected">
+            &nbsp;&nbsp;{{node.title}}&nbsp;&nbsp;
+        </span>
+        <span class="text" (click)="selectNode(node)" *ngIf="!node.isSelected">
+            &nbsp;&nbsp;{{node.title}}&nbsp;&nbsp;
+        </span>        
+    </div>
+    <div *ngIf="node.childList == null" class="text" style="margin-left:20px;">
+        <label class="fa fa-genderless"></label>
+        <span class="text" style="background-color: #C8C8C8" (click)="selectNode(node)" *ngIf="node.isSelected">
+            &nbsp;&nbsp;{{node.title}}&nbsp;&nbsp;
+        </span>
+        <span class="text" (click)="selectNode(node)" *ngIf="!node.isSelected">
+            &nbsp;&nbsp;{{node.title}}&nbsp;&nbsp;
+        </span>        
+    </div>
+    <div *ngIf="node.isOpened">
+        <div *ngFor="let childNode of node.childList"  style="margin-left:20px;">
+            <!-- 자식 노드 재귀 -->
+            <tree-node [node]="childNode" [selectNodeEvent]="selectNodeEvent"></tree-node>
+        </div>                     
+    </div>
+</div>

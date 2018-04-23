@@ -1,0 +1,95 @@
+
+<form [formGroup]="searchForm" class="form-horizontal">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">검색</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr role="row">
+                        <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사용자 상태</th>
+                        <td colspan="3">
+                            <div class="checkbox">
+                                <label *ngFor="let statusType of statusList" style="margin-right:10px;">
+                                    <input type="checkbox" formControlName="status{{statusType.value}}" value="{{statusType.value}}" [checked]="statusType.checked" [(ngModel)]="statusType.checked"/>{{statusType.name}}
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr role="row">
+                        <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사용자 권한</th>
+                        <td colspan="3">
+                            <select class="form-control" formControlName="authId">
+                                <option value="">사용자 권한 전체 </option>
+                                <option *ngFor="let auth of authList" value="{{auth.authId}}">
+                                    {{auth.authName}}
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr role="row">
+                        <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">
+                            <select class="form-control" formControlName="searchType">
+                                <option *ngFor="let option of searchTypeOptions" value="{{option.id}}">
+                                    {{option.name}}
+                                </option>
+                            </select>
+                        </th>
+                        <td colspan="3">
+                            <input type="text" class="form-control" placeholder="검색어를 입력하세요" formControlName="searchText"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" (click)="searchSubmit()">검색</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- 리스트 -->
+<div class="box">
+    <div class="box-header">
+        <div class="btn-group pull-right">
+            <select class="form-control" [(ngModel)]="realListSize" (change)="searchSubmit()" >
+                <option value=10>10개씩 보기</option>
+                <option value=20>20개씩 보기</option>
+                <option value=30>30개씩 보기</option>
+            </select>
+        </div>
+    </div>
+    <div class="box-body table-responsive">
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <th class="text-center">No</th>
+                    <th class="text-center">이름</th>
+                    <th class="text-center">아이디</th>
+                    <th class="text-center">사용자 권한</th>
+                    <th class="text-center">사용자 상태</th>
+                </tr>
+                <tr class="text-center"  *ngIf="results.length==0">
+                    <td colspan="5">검색된 내용이 없습니다.</td>
+                </tr>
+                <tr role="row" *ngFor="let result of results | paginate: { itemsPerPage: listSize, currentPage: pageNo, totalItems: totalCnt }; let i = index;">
+                    <td class="col-sm-1 text-center">{{totalCnt - ((pageNo-1)*listSize+i)}}</td>
+                    <td class="col-sm-2 text-center"><a href="javascript:;" (click)="goDetail(result.userId)">{{result.name}}</a></td>
+                    <td class="col-sm-2 text-center">{{result.loginId}}</td>
+                    <td class="col-sm-2 text-center">{{result.name}}</td>
+                    <td class="col-sm-2 text-center" *ngIf="result.status == 0">재직 중</td>
+                    <td class="col-sm-2 text-center" *ngIf="result.status == 1">퇴사</td>
+                    <td class="col-sm-2 text-center" *ngIf="result.status == 2">사용중지</td>
+                    <td class="col-sm-2 text-center" *ngIf="result.status == 3">승인대기</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="box-footer text-center">            
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>

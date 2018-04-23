@@ -1,0 +1,105 @@
+.selected {
+    background-color: #aaddff;
+    font-weight: bold;
+    padding: 1px 5px;
+}
+.angular-with-newlines {
+    white-space: pre-line;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th, .table-bordered {
+    vertical-align:middle;
+    border:1px solid lightgrey;
+}
+
+.table>tbody>tr>th, .table>thead>tr>th {
+    background-color:#f9f9f9;
+}
+
+.select-multi-width {
+    float:left;
+    width:15%;
+    margin-right:1%;
+}
+
+@-ms-viewport {
+    width: device-width;
+}
+@media (min-width: 992px) {
+    @-ms-viewport {
+        width: auto !important;
+    }
+}
+
+.ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word;
+    line-height: 1.2em;
+    height: 2.4em;
+}
+
+.panel-custom {
+    position: relative;
+    width: 400px;
+    border-radius: 5px;
+    padding: 5px;
+    margin:3px;
+}
+.pannel-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.img-caption {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.pannel-body {
+    width: 390px;
+    box-sizing: border-box;
+}
+.pannel-img {
+    width: 120px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px 0px;
+    padding-bottom: 10px;
+}
+.pannel-thumbnail {
+    width:120px; height:80px;
+}
+.popover-content {
+    width: 420px;
+}
+.popover {
+    max-width: 450px;
+}
+.popspan {
+    padding:7px;
+}
+
+[ng-click],
+[data-ng-click] {
+    cursor: pointer;
+}
+
+.modal-content{
+    position:fixed;
+    z-index:99999;
+}
+
+tree-view span{
+    cursor:pointer;
+}
+
+
+.radio-list{
+    border:none;
+    margin:0px;
+    padding:0px;
+}

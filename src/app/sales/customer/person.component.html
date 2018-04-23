@@ -1,0 +1,45 @@
+<div><button type="button" class="glyphicon glyphicon-remove" style="vertical-align: top; float:left;" (click)="delete()" *ngIf="hostViewContainerRef.length>1"></button></div>
+<table class="table table-bordered">
+    <tbody>
+        <tr role="row">
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">
+                부서명
+            </th>
+            <td colspan="3" class="col-sm-10">
+                <input class="form-control" type="text" [(ngModel)]="division" required />
+            </td>
+        </tr>
+        <tr role="row">
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">담당자명</th>
+            <td class="col-sm-4">
+                <input class="form-control" type="text" [(ngModel)]="name" required />
+            </td>
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">직급/직함</th>
+            <td class="col-sm-4">
+                <input class="form-control" type="text" [(ngModel)]="position" required />
+            </td>
+        </tr>
+        <tr role="row">
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">연락처</th>
+            <td class="col-sm-4">
+                <input class="form-control" type="text" [(ngModel)]="tel" required />
+            </td>
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">Mobile</th>
+            <td class="col-sm-4">
+                    <input class="form-control" type="text" [(ngModel)]="mobile" required />
+            </td>
+        </tr>
+        <tr role="row">
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">E-mail</th>
+            <td colspan="3" class="col-sm-10">
+                <input class="form-control" type="text" [(ngModel)]="email" required />
+            </td>
+        </tr>
+        <tr role="row">
+            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">Memo</th>
+            <td colspan="3" class="col-sm-10">
+                <textarea class="form-control" type="text" [(ngModel)]="memo"></textarea>
+            </td>
+        </tr>
+    </tbody>
+</table>

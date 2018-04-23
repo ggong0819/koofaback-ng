@@ -1,0 +1,25 @@
+<div style="border:solid 1px lightgrey;margin:0px;padding:0px;background:#ffffff;">
+    <table class="table" style="margin-bottom:0px;">
+        <tbody>
+            <tr role="row">
+                <th class="col-sm-2 text-center" style="border:0px;">{{title}}</th>
+            </tr>
+        </tbody>
+    </table>
+    <div style="overflow-y:auto;height:133px;vertical-align: middle;">                
+        <table class="table" style="margin-bottom:0px;" #radioTable>
+            <tbody>   
+                <tr role="row" *ngFor="let item of listData;let i = index;">
+                    <td class="col-sm-1" style="border-bottom:none;border-left:none;border-right:1px solid lightgrey;border-top:1px solid lightgrey;">
+                        <label style="margin-left:20px;width:97%;">
+                            <div style="width:80%;display:inline-block;">{{item.code_dtl_nm}}</div>
+                            <div style="width:15%;display:inline-block;">
+                                <input type="radio" value="{{item.code_dtl_id}}" [checked]="defaultValue==item.code_dtl_id || item.isChecked" (change)="check(item)"/>
+                            </div>
+                        </label>
+                    </td>
+                </tr>        
+            </tbody>                                                    
+        </table>
+    </div>                
+</div>

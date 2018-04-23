@@ -1,0 +1,8 @@
+.box-body {overflow:hidden;}
+.tree, .detail {float:left;padding-left:0;padding-right:0;}
+.tree {width:400px;}
+.tree .control-top {padding:10px;border:1px solid lightgrey;}
+.tree .tree-view {overflow-y:scroll;height:500px;padding:10px;border:1px solid lightgrey;border-top:none}
+.tree .control-bottom {padding-top:10px;text-align:center;}
+.detail {width:100%;margin-right:-400px;padding-right:400px;padding-left:10px;}
+.detail .box {border:1px solid lightgrey;box-shadow:none;}

@@ -1,0 +1,154 @@
+<div class="row">
+    <form [formGroup]="insertForm" (ngSubmit)="save()" class="form-horizontal">
+        <input type="hidden" formControlName="userId" value="{{userInfo.userId}}">
+    <div class="col-xs-12">
+        <div id="boxDiv1" class="box">
+            <div class="box-header">
+                <h3 class="box-title">수정 및 상세보기</h3>
+                <div class="help-block pull-right">*필수입력</div>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">이름 *</th>
+                            <td colspan="3" class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" formControlName="name" value="{{userInfo.name}}" required/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">아이디 *</th>
+                            <td colspan="3" class="col-sm-10">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" formControlName="loginId" value="{{userInfo.loginId}}" (keyup)="setUnchecked()" required/>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <button (click)="checkDuplication()" type="button" class="btn btn-primary">중복검사</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">비밀번호</th>
+                            <td colspan="3" class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <input type="password" class="form-control" formControlName="password"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사용자 권한 *</th>
+                            <td colspan="3" class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <select class="form-control" formControlName="authId">
+                                        <option *ngFor="let auth of authList" value="{{auth.authId}}">
+                                            {{auth.authName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사용자 상태 *</th>
+                            <td colspan="3" class="col-sm-10">
+                                <div class="col-sm-12 radio">
+                                    <label style="margin-right:10px;">
+                                        <input formControlName="status" type="radio" value="0" [checked]="userInfo.status==0"/>재직 중
+                                    </label>
+                                    <label style="margin-right:10px;">
+                                        <input formControlName="status" type="radio" value="1" [checked]="userInfo.status==1"/>퇴사
+                                    </label>
+                                    <label style="margin-right:10px;">
+                                        <input formControlName="status" type="radio" value="2" [checked]="userInfo.status==2"/>사용중지
+                                    </label>
+                                    <label style="margin-right:10px;">
+                                        <input formControlName="status" type="radio" value="3" [checked]="userInfo.status==3"/>승인대기
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" *ngIf="userInfo !== undefined">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">등록자</th>
+                            <td class="col-sm-4">
+                                {{userInfo.regName}}
+                            </td>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">수정자</th>
+                            <td class="col-sm-4">
+                                {{userInfo.modfName}}
+                            </td>
+                        </tr>
+                        <tr role="row" *ngIf="userInfo !== undefined">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">등록IP</th>
+                            <td class="col-sm-4">
+                                {{userInfo.regIp}}
+                            </td>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">수정IP</th>
+                            <td class="col-sm-4">
+                                {{userInfo.modfIp}}
+                            </td>
+                        </tr>
+                        <tr role="row" *ngIf="userInfo !== undefined">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">등록일</th>
+                            <td class="col-sm-4">
+                                {{userInfo.regDt | date:'yyyy-MM-dd HH:mm:ss'}}
+                            </td>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">수정일</th>
+                            <td class="col-sm-4">
+                                {{userInfo.modfDt | date:'yyyy-MM-dd HH:mm:ss'}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button (click)="goList()" type="button" class="btn btn-default">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">※ 로그인 기록</h3>
+            </div>
+            <div class="box-body">
+                    <div class="tab-content">
+                        <div class="active tab-pane">
+                            <div id="boxDiv2" class="box">
+                                <div class="box-header">
+                                    <input type="hidden" [(ngModel)]="pageNo">
+                                </div>
+                                <div class="box-body table-responsive no-padding">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th class="col-sm-2 text-center" style="vertical-align: middle; background-color:#f9f9f9;">No</th>
+                                                <th class="col-sm-5 text-center" style="vertical-align: middle; background-color:#f9f9f9;">접속 IP</th>
+                                                <th class="col-sm-5 text-center" style="vertical-align: middle; background-color:#f9f9f9;">접속일자</th>
+                                            </tr>
+                                            <tr class="text-center"  *ngIf="loginLogList.length==0">
+                                                <td colspan="3">로그인 기록이 없습니다.</td>
+                                            </tr>
+                                            <tr role="row" *ngFor="let result of loginLogList | paginate: { itemsPerPage: listSize, currentPage: pageNo, totalItems: totalCnt }; let i=index;">
+                                                <td class="col-sm-2 text-center">{{totalCnt - ((pageNo-1)*listSize+i)}}</td>
+                                                <td class="col-sm-5 text-center">{{result.regIp}}</td>
+                                                <td class="col-sm-5 text-center">{{result.regDt | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="box-footer text-center">            
+                                    <pagination-controls (pageChange)="pageChanged($event)" #api></pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

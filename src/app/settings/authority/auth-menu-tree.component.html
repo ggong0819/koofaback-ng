@@ -1,0 +1,6 @@
+<ul *ngFor="let menu of menuList " style="padding: 0px;margin-left:30px;list-style: none;">
+    <li style="margin-bottom:10px;">
+        <input type="checkbox" value="{{menu.menuId}}" attr.parentMenuId="{{menu.parentMenuId}}" (click)="checkMenu($event.target)" class="auth-menu" [checked]="menu.isHave"/>&nbsp;{{menu.menuName}}
+        <auth-menu-tree [allMenuList] ="allMenuList" [menuList]="allMenuList[menu.menuId]"></auth-menu-tree>
+    </li>
+</ul>

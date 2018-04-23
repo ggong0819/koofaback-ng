@@ -1,0 +1,112 @@
+<div class="custom-video" #customVideo
+    [ngClass]="{'control-hide' : isLock || isMiniview, 'miniview'  : isMiniview, 'origin' : !isMiniview, 'full' : isFullscreen}"
+    [style.width.px]="settings.width" [style.height.px]="settings.height" 
+    [style.top.px]="settings.top" [style.left.px]="settings.left">
+    <!--비디오-->
+    <video class="myvideo" #myVideo
+        (loadedmetadata)="loadmetadata()"
+        (playing)="playing()" 
+        (ended)="ended()"
+        (timeupdate)="timeUpdate()"
+        (swipeleft)="rewindForward('-')" 
+        (swiperight)="rewindForward('+')"
+        (panup)="alterVolume('+');"
+        (pandown)="alterVolume('-');"
+        (panend)="showVolume('hide')">
+        <source src="{{source}}" type="video/mp4">
+        <track label="Korea subtitles" kind="subtitles" srclang="ko" src="{{subtitles}}" default>
+    </video>
+    <!--헤더-->
+    <div class="video-header">
+        <h1>
+            <button class="btn btn-back" (click)="movePage('prev')"></button>
+            <span>{{movieInfo.title}}</span>
+        </h1>
+    </div>
+    <!--배속-->
+    <div class="speed-control">
+        <div class="inner">
+            <button class="btn btn-slower" #btnSlower (click)="alterPlayBackRate('-')">slower</button>
+            <span #txtSpeed class="text"></span><br>x
+            <button class="btn btn-faster" #btnFaster (click)="alterPlayBackRate('+')">faster</button>
+        </div>
+    </div>
+    <!--볼륨-->
+    <div class="vol-control" #volumeCtrl>
+        <div class="inner">
+            <progress #rangeVolume></progress>
+            <span #txtVolume class="text"></span>
+        </div>
+    </div>
+    <!--컨트롤-->
+    <div id="mycontrols" class="mycontrols">
+        <div id="main-control" class="main-control">
+            <div class="seeker">
+                <input type="range" value="0" class="seekbar" #seekbar
+                    (change)="changeSeek()"
+                    (input)="inputSeek()"
+                    (mousedown)="mousedownSeek()" (touchstart)="mousedownSeek()"
+                    (mouseup)="mouseupSeek()" (touchend)="mouseupSeek()"
+                    [style.backgroundSize]="seekbar.value + '% 100%'">
+                <span class="seek-label" #seekLabel
+                    [style.marginLeft.%]="seekbar.value"
+                    [style.left.px]="(seekbar.value / 100 * -20) - 30"></span>
+                <span class="seek-repeata" #seekRepeatA [ngClass]="{'hide' : !repeata}"></span>
+                <span class="seek-repeatb" #seekRepeatB [ngClass]="{'hide' : !repeatb}"></span>
+            </div>
+            <div class="control-box">
+                <div class="left">
+                    <span class="current-time" #currentTime></span><span class="total-time" #totalTime></span>
+                    <button class="btn btn-repeat" #btnRepeat [ngClass]="{'active' : repeata && repeatb}" (click)="repeat()">A-B</button>
+                </div>
+                <div class="center">
+                    <button class="btn btn-rewind" #btnRewind (click)="rewindForward('-')">Rewind</button>
+                    <button class="btn btn-playpause" #btnPlaypause [ngClass]="[video.nativeElement.paused ? 'icon-play' : 'icon-pause']" (click)="playpause()">Play/Pause</button>
+                    <button class="btn btn-forward" #btnForward (click)="rewindForward('+')">Forward</button>
+                </div>
+                <div class="right">
+                    <button class="btn btn-capture" #btnCapture (click)="capture()">Capture</button>
+                    <button class="btn btn-full-normal" #btnFullscreen [ngClass]="[isFullscreen ? 'icon-normal' : 'icon-full']" (click)="fullscreen()">FullScreen</button>
+                    <!--<button class="btn btn-mini" #btnMini (click)="miniview()" [ngClass]="{'hide' : isLock, 'miniview' : isMiniview}">Mini</button>-->
+                </div>
+            </div>
+        </div>
+        <!--<div class="sub-control">
+            <button class="btn btn-fullscreen" #btnFullscreen (click)="fullscreen()" [ngClass]="[!isFullscreen ? 'icon-fullscreen-exit-alt' : 'icon-fullscreen-alt']">Full</button>
+            <button class="btn btn-lock" #btnLock (click)="lock()" [ngClass]="{'active' : isLock, 'hide' : isMiniview}">Lock</button>
+        </div>-->
+    </div>
+    <!--네비게이터-->
+    <nav class="video-nav">
+        <button class="btn btn-close">닫기</button>
+        <button class="btn btn-nav" [ngClass]="{'open' : isNav}" (click)="nav()"></button>
+        <div class="video-nav-cont" [ngClass]="{'hide' : !isNav}">
+            <header class="video-nav-header">
+                <div class="inner">
+                    <h1>
+                        <div class="teacher">[수학] 오슬아 선생님</div>
+                        <div class="subj">2017 에이급 수학 2-1 전범위: 천재</div>
+                    </h1>
+                </div>
+            </header>
+            <div class="video-nav-list">
+                <ul>
+                    <li><span><i>Ⅰ.</i>제곱근과 실수 연산</span>
+                        <ul>
+                            <li><span><i>02강</i>{{movieInfo.title}} </span>
+                                <ul>
+                                    <li *ngFor="let chapter of movieInfo.courseMovieChapterList; let i = index;">
+                                        <a href="javascript:void(0)" (click)="setOptions({startTime: HmsToSeconds(chapter.startTime), endTime: HmsToSeconds(chapter.endTime) })">{{chapter.title}}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--캡처 영역-->
+    <canvas class="canvas hide" #canvas></canvas>
+    <a class="canvas-image hide" #canvasImage (click)="downloadCanvas()"></a>
+</div>

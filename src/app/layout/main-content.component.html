@@ -1,0 +1,16 @@
+<!-- main app container -->
+<div class="content-wrapper">
+    <section class="content-header">
+    <h1>
+        {{menu.menu}}
+    </h1>
+    <ol class="breadcrumb">
+        <li><i class="fa fa-pie-chart"></i> 홈</li>
+        <li>{{menu.category}}</li>
+        <li class="active">{{menu.menu}}</li>
+    </ol>
+    </section>
+    <section class="content">
+        <router-outlet></router-outlet>
+    </section>
+</div>

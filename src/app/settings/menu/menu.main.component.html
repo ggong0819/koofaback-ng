@@ -1,0 +1,111 @@
+<div class="box">
+    <div class="box-body">
+        <div class="tree">
+            <div class="control-top">
+                <button class="btn btn-primary btn-sm" (click)="createNewChildNode()">하위메뉴 생성</button>
+                <div class="pull-right">
+                    <button class="glyphicon glyphicon-chevron-up" style="vertical-align: middle;" (click)="nodeUp()"></button>
+                    <button class="glyphicon glyphicon-chevron-down" style="vertical-align: middle;margin-right:10px" (click)="nodeDown()"></button>
+                </div>
+            </div>
+            <div class="tree-view">
+                <tree-view *ngIf="node != null" [node]="node" (selectNodeEvent)="eventSelectNode($event)"></tree-view>
+            </div>
+            <div class="control-bottom">
+                <button class="btn btn-primary" (click)="saveAllMenuOnChange()">메뉴 순서 변경 저장</button>
+            </div>
+        </div>
+        <div class="detail">
+            <!--선택된 메뉴가 없을때 -->
+            <div *ngIf="currentNode==null" class="box" style="display: table; min-height: 150px; overflow: hidden;margin-top: 20px">
+                <div class="text-center" style="display: table-cell; vertical-align: middle;color: #FF0000">
+                    <div>
+                        변경을 원하는 메뉴<br>or<br>하위 메뉴가 필요한 메뉴를 선택해 주세요.
+                    </div>
+                </div>
+            </div> 
+                    
+            <!-- 선택된 메뉴가 있을때 -->
+            <div *ngIf="currentNode != null">
+                <table class="table table=bordered">
+                    <tbody>
+                        <tr role="row">
+                            <th class="col-sm-3"> 메뉴 코드 * </th>
+                            <td class="col-sm-9"> {{currentNode.menuId}}</td>
+                        </tr>
+                        <tr role="row">                                    
+                            <th class="col-sm-3"> 상위 메뉴 * </th>
+                            <td class="col-sm-9">
+                                <div class="text" *ngIf="currentNode.getParent()">{{currentNode.getParent().title}}</div>
+                                <div class="text" *ngIf="!currentNode.getParent()">없음</div>                                                
+                            </td>
+                        </tr>                                
+                        <tr role="row">                                                                    
+                            <th class="col-sm-3"> 메뉴명 * </th>
+                            <td class="col-sm-9"> 
+                                <input class="col-sm-9" type="text" [(ngModel)]="nodeViewInfo.menuName">
+                            </td>                      
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-3"> 주소(URL)</th>
+                            <td class="col-sm-9">
+                                <input class="col-sm-9" type="text" [(ngModel)]="nodeViewInfo.menuUrl">
+                            </td>  
+                        </tr>      
+                        <tr role="row">                                                                                                           
+                            <th class="col-sm-3"> 노출 여부 * </th>
+                            <td class="col-sm-9">
+                                <label class="radio-inline">
+                                    <input type="radio" value="Y" [(ngModel)]="nodeViewInfo.displayYn">사용
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" value="N" [(ngModel)]="nodeViewInfo.displayYn">미사용
+                                </label>
+                            </td>                                                                                                               
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-3"> 허용 URL </th>
+                            <td class="col-sm-9">
+                                <div *ngFor="let urlItem of urlList" style="margin-top: 5px;">
+                                    <input class="col-sm-9" style="margin-left:10px;margin-top:2px;" type="text" [(ngModel)]="urlItem.menuUrl">
+                                    <button id="btnUrlModify" style="margin-left:5px;" type="button" class="btn btn-primary btn-sm" (click)="modifyUrl(urlItem, 0)">수정</button>
+                                    <button id="btnUrlDelete" style="margin-left:5px;" type="button" class="btn btn-danger btn-sm" (click)="modifyUrl(urlItem, 1)">삭제</button>
+                                </div>
+                                <div style="margin-top: 5px;">
+                                    <input class="col-sm-9" style="margin-left:10px;margin-top:2px;" type="text" [(ngModel)]="urlInput">
+                                    <button id="btnUrlSave" style="margin-left:5px;" type="button" class="btn btn-primary btn-sm" (click)="addUrl(urlInput)">추가</button>                                                
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="width: 100%" style="text-align: right;margin-right: 10px;">
+                    <button id="btnDelete" type="button" class="btn btn-danger" (click)="deleteMenu()">삭제</button>                    
+                    <button id="btnSave" type="button" class="btn btn-primary" (click)="saveMenuInfo()">저장</button>
+                </div>  
+            </div>             
+
+            <div style="margin-top: 10px;"> ※ 사용안내 </div>
+            <table class="table talbe=bordered">
+                <tbody>
+                    <tr role="row">
+                        <th class="col-sm-3 text-center">
+                            <button class="btn btn-primary btn-sm">하위메뉴 생성</button>
+                        </th>
+                        <td class="col-sm-9">
+                            상위 메뉴를 선택 후 해당 버튼을 클릭하면 하위 메뉴가 생성됩니다.
+                        </td>
+                    </tr>
+                    <tr role="row">
+                        <th class="col-sm-3 text-center">
+                            순서설정&nbsp;<button class="glyphicon glyphicon-chevron-up"></button><button class="glyphicon glyphicon-chevron-down"></button>
+                        </th>
+                        <td class="col-sm-9">
+                            해당 아이콘을 통해 메뉴 노출 순서를 설정할 수 있습니다.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

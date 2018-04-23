@@ -1,0 +1,20 @@
+<li *ngFor="let menu of menuList" [ngClass]="{'treeview': menu.menuLevel == 1 }" [attr.lv]="menu.menuLevel" routerLinkActive="active">
+
+    <!--//lv 1일때-->
+    <a *ngIf="menu.menuLevel == 1">
+        <i class="fa fa-share"></i>
+        <span>{{menu.menuName}}</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    
+    <!--lv 1이 아니고 자식노드가 존재하지 않을때-->
+    <a *ngIf="menu.menuLevel != 1 && allMenuList[menu.menuId] == null" [routerLink]="[menu.menuUrl]"><i class="fa fa-circle-o"></i>{{menu.menuName}}</a>
+
+    <!--lv 0아니고 자식노드가 존재할 때-->
+    <a *ngIf="menu.menuLevel != 1 && allMenuList[menu.menuId] != null" href="javascript:;"><i class="fa fa-circle-o"></i>{{menu.menuName}}<i class="fa fa-angle-left pull-right"></i></a>
+    <ul *ngIf="allMenuList[menu.menuId]" class="treeview-menu" menu-tree [allMenuList]="allMenuList" [menuList]="allMenuList[menu.menuId]">
+    </ul>
+</li>
+

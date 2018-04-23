@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<base href="/">
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="/AdminLTE/dist/css/AdminLTE.min.css">
+	<link rel="stylesheet" href="/AdminLTE/dist/css/skins/skin-purple.min.css">
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <!-- Summernote -->
+  <link rel="stylesheet" href="/node_modules/summernote/dist/summernote.css">
+
+<!-- Polyfills -->
+    <script src="/node_modules/core-js/client/shim.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <script src="/node_modules/zone.js/dist/zone.js"></script>
+    <script src="/node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="/node_modules/systemjs/dist/system.src.js"></script>
+    <script src="./systemjs.config.js"></script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+    <style>
+    </style>
+</head>
+<body class="hold-transition skin-purple sidebar-mini">
+<div class="wrapper" style="min-height: 100% !important;">
+  <my-app></my-app>
+  
+</div>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/jquery-ui.1.11.1/dist/jquery-ui.js"></script>
+<!-- Summernote -->
+<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/node_modules/summernote/dist/summernote.min.js"></script>
+<script src="/node_modules/summernote/lang/summernote-ko-KR.js"></script>
+
+<!-- AdminLTE App -->
+<script src="/AdminLTE/dist/js/app.min.js"></script>
+<script>
+  function reloadHeight(){
+    var intervalTime = 100;
+    var intervalId = setInterval(function(){
+      if(null!=$('div.content-wrapper').height()){
+        $.AdminLTE.layout.fix();
+        $.AdminLTE.layout.fixSidebar();
+        clearInterval(intervalId);
+      }
+    }, intervalTime)
+  }
+  $(window).load(function() {
+    window.reloadHeight = reloadHeight;
+    reloadHeight();
+  });
+</script>
+</body>
+</html>

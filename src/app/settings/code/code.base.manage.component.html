@@ -1,0 +1,49 @@
+<!-- 코드 리스트 페이지 -->
+<section class="content">
+    <div class="row">
+        <!-- 상단 검색 박스 -->
+        <div class="box">
+            <form [formGroup]="insertForm" (ngSubmit)="submit()">
+                <div class="box-header">
+                    <div class="pull-right">* 필수 입력</div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr role="row">
+                                <th class="col-sm-2 text-center odd" style="background-color: #f9f9f9;">코드번호*</th>
+                                <td colspan="3">
+                                    {{itemInfo.codeId}}
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <th class="col-sm-2 text-center odd" style="background-color: #f9f9f9;">코드명*</th>
+                                <td colspan="3">
+                                    <input class="col-sm-10" type="text" formControlName="codeName" placeholder="코드명을 입력하세요" required>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <th class="col-sm-2 text-center odd" style="background-color: #f9f9f9;">사용여부*</th>
+                                <td colspan="3">
+                                    <label style="margin-right:10px;">
+                                        <input type="radio" formControlName="displayYn" value="Y" style="margin-right:10px;">사용
+                                    </label>
+                                    <label style="margin-right:10px;">
+                                        <input type="radio" formControlName="displayYn" value="N" style="margin-right:10px;">미사용
+                                    </label>
+                                </td>                                
+                            </tr>                                                     
+                        </tbody>
+                    </table>    
+                    <reg-modf *ngIf="!isCreateMode && itemInfo != null" [info]="itemInfo"></reg-modf>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right">                    
+                        <button type="submit" class="btn btn-primary">{{submitTitle}}</button>                    
+                        <button id="btnBack" type="button" class="btn btn-btn-default" (click)="backToList()">목록</button>
+                    </div>
+                </div>          
+            </form>  
+        </div>
+    </div>
+</section>

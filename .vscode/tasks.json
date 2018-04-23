@@ -1,0 +1,42 @@
+// {
+//     // See https://go.microsoft.com/fwlink/?LinkId=733558
+//     // for the documentation about the tasks.json format
+//     "version": "0.1.0",
+//     "command": "tsc",
+//     "isShellCommand": true,
+//     "args": ["-w", "-p", "."],
+//     "showOutput": "silent",
+//     "isBackground": true,
+//     "problemMatcher": "$tsc-watch",
+//     "type": "shell"
+// }
+
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "args": ["-w", "-p", "."],
+    // "showOutput": "silent",
+    "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+    },
+    "command": "tsc",
+    "isBackground": true,
+    "type": "shell",
+    "tasks": [
+        {
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

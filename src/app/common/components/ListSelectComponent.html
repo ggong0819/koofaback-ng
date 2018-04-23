@@ -1,0 +1,40 @@
+<div style="border: 1px solid gray; float: left; width: 30%;" [style.height]="getHeight()" [style.line-height]="getHeight()">
+    <div class="text-center" style="border-bottom: 1px solid gray;background-color: #F9F9F9;height:40px;line-height:40px">
+        <B>{{contentsTitle}}</B>
+    </div>
+    <div>
+        <div *ngFor="let item of contentsList">
+            <div *ngIf="!item.isSelected" style="margin-left:10px;height: 30px;line-height: 30px;" (click)="setFocus(0, item)">
+                <span *ngIf="currentSelectItem == item" style="background-color: #77CDDD">{{item.title}}</span>
+                <span *ngIf="currentSelectItem != item">{{item.title}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="float: left; width: 10%;position:relative" [style.height]="getHeight()" [style.line-height]="getHeight()">
+    <div class="text-center fa-hand-o">
+        <div>
+            <button type="button" [disabled]="selectPos != 0" class="fa fa-hand-o-right" (click)="selectItem()"></button>
+            <p>추가</p>
+        </div>
+        <div>
+            <button type="button" [disabled]="selectPos != 1" class="fa fa-hand-o-left" (click)="deSelectItem()"></button>
+            <p>빼기</p>
+        </div>
+    </div>
+</div>
+<div style="border: 1px solid gray; float: left; width: 30%;" [style.height]="getHeight()" [style.line-height]="getHeight()">
+    <div class="text-center" style="border-bottom: 1px solid gray;background-color: #F9F9F9;height:40px;line-height:40px">
+        <B>{{selectTitle}}</B>
+    </div>
+    <div *ngFor="let item of selectList;let i = index;">
+        <div style="margin-left:10px;height: 30px;line-height: 30px;" (click)="setFocus(1, item)">
+            <span *ngIf="currentSelectItem == item" style="background-color: #77CDDD">{{item.title}}</span>
+            <span *ngIf="currentSelectItem != item">{{item.title}}</span>
+            <span class="pull-right"> 
+                <button type="button" class="glyphicon glyphicon-chevron-up" [disabled]="i  == 0" (click)="itemMove(true, i)"></button>
+                <button type="button" class="glyphicon glyphicon-chevron-down" [disabled]="selectList.length == 0 || i  == selectList.length - 1" (click)="itemMove(false, i)"></button>                
+            </span>
+        </div>
+    </div>
+</div>
