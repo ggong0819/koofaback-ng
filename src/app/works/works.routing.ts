@@ -6,9 +6,9 @@ import { WorkListComponent, WorkRequestListComponent }    from './work/work.inde
 const WorksRoutes: Routes = [
   { path: 'works',
     children:[
-      { path: '', redirectTo:"workRequestList"},
-      { path: 'workRequestList', component: WorkRequestListComponent },
-      { path: 'workRequestList', component: WorkListComponent },
+      { path: '', redirectTo:"requestList"},
+      { path: 'requestList', component: WorkRequestListComponent },
+      { path: 'list', component: WorkListComponent },
     ]
   },
 

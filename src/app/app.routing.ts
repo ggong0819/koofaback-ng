@@ -20,6 +20,7 @@ const appRoutes: Routes = [
             // { path: '', canActivate: [AuthGuard], redirectTo: 'user/login', pathMatch: 'full' },
             { path: 'settings', loadChildren: 'app/settings/settings.module#SettingsModule', resolve:{commonCode:CommonCodeResolver}},
             { path: 'sales', loadChildren: 'app/sales/sales.module#SalesModule', resolve:{commonCode:CommonCodeResolver}},
+            { path: 'works', loadChildren: 'app/works/works.module#WorksModule', resolve:{commonCode:CommonCodeResolver}},
         ]
     },
     
