@@ -1,0 +1,103 @@
+<div class="row">
+    <form [formGroup]="insertForm" class="form-horizontal">
+        <input type="hidden" formControlName="workRequestId" value="{{workRequestInfo.workRequestId}}">
+    <div class="col-xs-12">
+        <div id="boxDiv1" class="box">
+            <div class="box-header">
+                <div class="help-block pull-left">*필수입력</div>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">거래처</th>
+                            <td colspan="3" class="col-sm-10">
+                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="customerId">
+                                    <option value="">거래처 선택</option>
+                                    <ng-container *ngFor="let customer of customerInfoList">
+                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">1차구분</th>
+                            <td class="col-sm-4">
+                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="type1Code">
+                                    <option value="">1차구분선택</option>
+                                    <ng-container *ngFor="let customer of customerInfoList">
+                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">2차구분</th>
+                            <td class="col-sm-4">
+                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="type2Code">
+                                    <option value="">2차구분선택</option>
+                                    <ng-container *ngFor="let customer of customerInfoList">
+                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
+                                    </ng-container>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사업자등록번호</th>
+                            <td colspan="3" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="corpRegNum" value="{{customerInfo.corpRegNum}}"/>
+                                <button id="btnImgUpload" type="button" class="btn btn-primary" (click)="fileInput.click()">첨부</button>
+                                <span style="display: none;"><input type="file" #fileInput name="imgFile" (change)="selectFile($event)"/></span>
+                                <button *ngIf="corpRegistFilePath != null &&  '' != corpRegistFilePath" (click)="getImage()">사업자등록증 다운로드</button>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">대표자이름</th>
+                            <td colspan="3" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="representPersonName" value="{{customerInfo.representPersonName}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사업장주소</th>
+                            <td colspan="3" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="address" value="{{customerInfo.address}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업태</th>
+                            <td class="col-sm-4">
+                                <input type="text" class="form-control" formControlName="businessCondition" value="{{customerInfo.businessCondition}}"/>
+                            </td>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">종목</th>
+                            <td class="col-sm-4">
+                                <input type="text" class="form-control" formControlName="businessItem" value="{{customerInfo.businessItem}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">홈페이지주소</th>
+                            <td colspan="3" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="homepageUrl" value="{{customerInfo.homepageUrl}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-md-2 text-center">
+                                <span>담당자 정보</span>
+                                <br>
+                                <button type="button" class="btn btn-primary" (click)="addRow();">추가</button>
+                            </th>
+                            <td class="col-md-10" colspan="3">
+                                <ng-container person></ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <reg-modf *ngIf="!isCreateMode && customerInfo != null" [info]="customerInfo"></reg-modf>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button (click)="save()" type="button" class="btn btn-primary">{{submitTitle}}</button>
+                    <button (click)="goList()" type="button" class="btn btn-default">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>

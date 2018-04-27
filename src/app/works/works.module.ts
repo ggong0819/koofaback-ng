@@ -9,6 +9,7 @@ import { Ng2PaginationModule } from 'ng2-pagination';
 import { ModalModule} from 'ngx-bootstrap';
 
 import { WorkListComponent, WorkRequestListComponent, WorkService}    from './work/work.index';
+import { CustomerService}    from '../sales/customer/customer.service';
 
 @NgModule({
   imports:[ 
@@ -28,6 +29,7 @@ import { WorkListComponent, WorkRequestListComponent, WorkService}    from './wo
     WorksService,
     CommonModule,
     WorkService,
+    CustomerService
   ]
 })
 
