@@ -17,6 +17,7 @@ var appRoutes = [
             // { path: '', canActivate: [AuthGuard], redirectTo: 'user/login', pathMatch: 'full' },
             { path: 'settings', loadChildren: 'app/settings/settings.module#SettingsModule', resolve: { commonCode: common_resolver_service_1.CommonCodeResolver } },
             { path: 'sales', loadChildren: 'app/sales/sales.module#SalesModule', resolve: { commonCode: common_resolver_service_1.CommonCodeResolver } },
+            { path: 'works', loadChildren: 'app/works/works.module#WorksModule', resolve: { commonCode: common_resolver_service_1.CommonCodeResolver } },
         ]
     },
     { path: '**', component: pageNotFound_component_1.PageNotFoundComponent }
