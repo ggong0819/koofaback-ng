@@ -16,12 +16,12 @@ var ng2_pagination_1 = require("ng2-pagination");
 var ngx_bootstrap_1 = require("ngx-bootstrap");
 var work_index_1 = require("./work/work.index");
 var customer_service_1 = require("../sales/customer/customer.service");
-var WorkModule = (function () {
-    function WorkModule() {
+var WorksModule = (function () {
+    function WorksModule() {
     }
-    return WorkModule;
+    return WorksModule;
 }());
-WorkModule = __decorate([
+WorksModule = __decorate([
     core_1.NgModule({
         imports: [
             forms_1.FormsModule,
@@ -34,7 +34,8 @@ WorkModule = __decorate([
         ],
         declarations: [
             work_index_1.WorkListComponent,
-            work_index_1.WorkRequestListComponent
+            work_index_1.WorkRequestListComponent,
+            work_index_1.WorkRequestDetailComponent
         ],
         providers: [
             works_service_1.WorksService,
@@ -43,6 +44,6 @@ WorkModule = __decorate([
             customer_service_1.CustomerService
         ]
     })
-], WorkModule);
-exports.WorkModule = WorkModule;
+], WorksModule);
+exports.WorksModule = WorksModule;
 //# sourceMappingURL=works.module.js.map

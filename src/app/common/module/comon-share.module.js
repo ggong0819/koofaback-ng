@@ -18,6 +18,7 @@ var mydatepicker_1 = require("mydatepicker");
 var RegModfComponent_1 = require("../components/RegModfComponent");
 var tree_component_1 = require("../components/tree/tree.component");
 var ListSelectComponent_1 = require("../components/ListSelectComponent");
+var SelectBoxComponent_1 = require("../components/selectbox/SelectBoxComponent");
 var player_component_1 = require("../components/player/player.component");
 var CommonSharedModule = (function () {
     function CommonSharedModule() {
@@ -41,6 +42,7 @@ CommonSharedModule = __decorate([
             tree_component_1.TreeView,
             tree_component_1.TreeNodeView,
             ListSelectComponent_1.ListSelectComponent,
+            SelectBoxComponent_1.SelectBoxComponent,
             player_component_1.PlayerComponent,
         ],
         exports: [
@@ -50,6 +52,7 @@ CommonSharedModule = __decorate([
             tree_component_1.TreeView,
             tree_component_1.TreeNodeView,
             ListSelectComponent_1.ListSelectComponent,
+            SelectBoxComponent_1.SelectBoxComponent,
             player_component_1.PlayerComponent,
         ],
         providers: []

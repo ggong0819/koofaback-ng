@@ -35,9 +35,24 @@ var CommonService = (function () {
             //아래 공통 코드 추가/삭제/수정시 common-resolver.service.ts에도 같이 수정해야 합니다.
             for (var _i = 0, _a = res.result; _i < _a.length; _i++) {
                 var base = _a[_i];
-                switch (base.code_base_id) {
-                    case 10001:
-                        _this.commonCode.setLocationCodeList(base.detailList);
+                switch (base.codeId) {
+                    case '10012':
+                        _this.commonCode.setLocationCodeList(base.childCodeList);
+                        break;
+                    case '10007':
+                        _this.commonCode.setWorkTypeCodeList(base.childCodeList);
+                        break;
+                    case '10010':
+                        _this.commonCode.setTargetCodeList(base.childCodeList);
+                        break;
+                    case '10008':
+                        _this.commonCode.setCustomerTypeCodeList(base.childCodeList);
+                        break;
+                    case '10009':
+                        _this.commonCode.setSubjectCodeList(base.childCodeList);
+                        break;
+                    case '10011':
+                        _this.commonCode.setTimesCodeList(base.childCodeList);
                         break;
                 }
             }

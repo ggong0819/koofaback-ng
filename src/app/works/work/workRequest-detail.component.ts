@@ -12,12 +12,13 @@ import { CustomerService } from '../../sales/customer/customer.service';
 import { MainContentComponent } from '../../layout/main-content.component';
 import {CommonCodeItem} from '../../services/common-code.item';
 
+import { SelectBoxComponent } from '../../common/components/selectbox/SelectBoxComponent';
 
 import { config } from '../../config/config';
 
 @Component({
     moduleId: module.id,
-    templateUrl: 'work-detail.component.html',
+    templateUrl: 'workRequest-detail.component.html',
     providers: [ WorkService]
 })
 
@@ -26,19 +27,26 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
     private workRequestId : any;
     private workRequestInfo : any = {};
     private isCreateMode: boolean = false;
+    private defaultWorkTypeCode: any;
+
+    @ViewChild(SelectBoxComponent) workTypeSelectBox : SelectBoxComponent;
 
     //거래처 리스트
     customerInfoList:any = [];
 
-    //1차구분 코드 리스트
-    type1CodeList:any = [];
-    //1차구분 코드 리스트
-    type2CodeList:any = [];
+   //업무구분 코드리스트
+   private workTypeCodeList:any;
+   //지역 코드 리스트
+   private locationCodeList:any;
+   //대상 코드 리스트
+   private targetCodeList:any;
+   //업무 담당자 직원리스트
+   private workUserList:any;
 
     submitTitle: string = '등록';
 
     public insertForm = this.fb.group({
-        customerId:[],
+        workRequestId:[],
         corpName:[],
         corpRegNum:[],
         representPersonName : [ ],
@@ -59,12 +67,16 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
     ){
         super();
 
-         //최초 가지고 와야할 코드들..
+        //최초 가지고 와야할 코드들..
         this.route.data
         .subscribe(data => {
             let commonCode = <CommonCodeItem>data.commonCode;
-            this.type1CodeList = commonCode.getType1CodeList();
-            this.type2CodeList = commonCode.getType2CodeList();
+
+            this.workTypeCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
+            this.workTypeCodeList.concat(commonCode.getWorkTypeCodeList());
+            this.locationCodeList = commonCode.getLocationCodeList();
+            this.targetCodeList = commonCode.getTargetCodeList();
+            this.workUserList = commonCode.getWorkUserList();
         });
 
 
@@ -73,7 +85,6 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
     ngOnInit(): void {
         //거래처 리스트 받아오기
         let formData :any;
-        formData.listSize = 100000;
 
         let observable = this.customerService.search(formData);
         observable.subscribe(
@@ -95,7 +106,6 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
                 }
             }
         )
-
 
         if (this.route.snapshot.params['type'] == 'create'){
             this.isCreateMode = true;

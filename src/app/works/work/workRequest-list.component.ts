@@ -13,6 +13,8 @@ import { MainContentComponent } from '../../layout/main-content.component';
 import { ListComponent } from "../../common/components/ListComponent";
 import { CommonService } from "../../services/common.service";
 
+import {CommonCodeItem} from '../../services/common-code.item';
+
 @Component({
     moduleId: module.id,
     templateUrl: 'workRequest-list.component.html',
@@ -25,6 +27,11 @@ export class WorkRequestListComponent extends ListComponent implements OnInit {
     private authList: any = [];
     realListSize: number = 20;
     private searchTypeOptions: any;
+
+    //업무구분 코드리스트
+    private workTypeCodeList:any;
+    //지역 코드 리스트
+    private locationCodeList:any;
 
     constructor(
         public route: ActivatedRoute,
@@ -42,11 +49,20 @@ export class WorkRequestListComponent extends ListComponent implements OnInit {
         };
 
         this.searchTypeOptions = [
-            { id: "corpName", name: '상호' },
-            { id: "representPersonName", name: '주제' },
-            { id: "corpRegNum", name: '업무번호' },
-            { id: "personName", name: '담당자명' }
+            { id: "corpName", name: '거래처명' },
+            { id: "subject", name: '주제' },
+            { id: "workId", name: '업무번호' },
+            { id: "personName", name: '담당자명' },
+            { id: "location", name: '지역' },
         ];
+
+        //최초 가지고 와야할 코드들..
+        this.route.data
+        .subscribe(data => {
+            let commonCode = <CommonCodeItem>data.commonCode;
+            this.workTypeCodeList = commonCode.getWorkTypeCodeList();
+            this.locationCodeList = commonCode.getLocationCodeList();
+        });
 
     }
 
@@ -91,12 +107,12 @@ export class WorkRequestListComponent extends ListComponent implements OnInit {
 
     goDetail(workRequestId: any) {
         this.commonService.formData = this.searchForm;
-        this.router.navigate(['/works/workRequest/detail', { type: 'modify', workRequestId: workRequestId}]);
+        this.router.navigate(['/works/request/detail', { type: 'modify', workRequestId: workRequestId}]);
     }
 
     createWorkRequest() {
         this.commonService.formData = this.searchForm;
-        this.router.navigate(['/works/workRequest/detail', { type: 'create' }]);
+        this.router.navigate(['/works/request/detail', { type: 'create' }]);
     }
 
 }

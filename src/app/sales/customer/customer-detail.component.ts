@@ -15,6 +15,11 @@ import { PersonDirective } from './person.directive';
 
 import { config } from '../../config/config';
 
+
+import {CommonCodeItem} from '../../services/common-code.item';
+import { SelectBoxComponent } from '../../common/components/selectbox/SelectBoxComponent';
+import { OptionModel } from '../../common/components/selectbox/OptionModel';
+
 @Component({
     moduleId: module.id,
     templateUrl: 'customer-detail.component.html',
@@ -28,6 +33,10 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
     private checkedDuplication = false;
     private isCreateMode: boolean = false;
     private corpRegistFilePath:any;
+    private customerTypeCodeList : any = [];
+
+    private customerTypeCodeOptions : any = [];
+    private defaultCustomerTypeCode: any;
 
     nativeWindow: any
 
@@ -44,8 +53,11 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
     @ViewChild(PersonDirective) personHost: PersonDirective;
     // @ViewChild('fileInput') public fileInput : any;
 
+    @ViewChild('customerTypeCodeBox') customerTypeCodeBox : SelectBoxComponent;
+
     public insertForm = this.fb.group({
         customerId:[],
+        customerTypeCode:[],
         corpName:[],
         corpRegNum:[],
         representPersonName : [ ],
@@ -64,16 +76,29 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
         private resolver: ComponentFactoryResolver
     ){
         super();
+
+        //최초 가지고 와야할 코드들..
+        this.route.data
+        .subscribe(data => {
+            let commonCode = <CommonCodeItem>data.commonCode;
+            this.customerTypeCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
+            for (let code of commonCode.getCustomerTypeCodeList()) {
+                this.customerTypeCodeList.push(code);
+            }
+        });
     }
 
     ngOnInit(): void {
+
+        this.defaultCustomerTypeCode = "";
+
         if (this.route.snapshot.params['type'] == 'create'){
             this.isCreateMode = true;
             this.mainComponent.menu={
                 category : "영업",
                 menu : "고객관리 > 등록"
-            };  
-            
+            };
+
             this.addRow();
 
         } else {
@@ -91,6 +116,10 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
                 response => {
                     if(response.customerInfo){
                         this.customerInfo = response.customerInfo;
+                        
+                        if (null != this.customerInfo.customerTypeCode) {
+                            this.customerTypeCodeBox.setOpionValue(this.customerInfo.customerTypeCode);
+                        }
                         
                         this.insertForm.controls['customerId'].setValue(this.customerInfo.customerId, {});
                         this.insertForm.controls['corpName'].setValue(this.customerInfo.corpName, {});
@@ -131,7 +160,6 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
     }
 
     save(){
-
         if(!confirm('저장하시겠습니까?')){
              return false;
         }
@@ -147,6 +175,8 @@ export class CustomerDetailComponent extends CommonComponent implements OnInit  
         }
         mFormData.append("representPersonName", formData.representPersonName);
         mFormData.append("address", formData.address);
+
+        mFormData.append("customerTypeCode", this.customerTypeCodeBox.getSelectedValue());
         mFormData.append("businessCondition", formData.businessCondition);
         mFormData.append("businessItem", formData.businessItem);
         mFormData.append("homepageUrl", formData.homepageUrl);

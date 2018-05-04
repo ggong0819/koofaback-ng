@@ -32,7 +32,7 @@
     <div class="box">
         <div class="box-header">
             <div class="btn-group pull-right" style = "margin-left: 3px">
-                <button id="btnNewCustomer" type="button" class="btn btn-primary" (click)="createCustomer()">신규 등록</button>
+                <button id="btnNewCustomer" type="button" class="btn btn-primary" (click)="createWork()">신규 등록</button>
                 <select formControlName="listSize" [(ngModel)]="realListSize" style="margin-left: 10px" (change)="searchSubmit()" >
                     <option value=10>10개씩 보기</option>
                     <option value=20>20개씩 보기</option>
@@ -44,10 +44,12 @@
             <table class="table table-hover">
                 <tbody>
                     <tr>
-                        <th class="text-center">No</th>
-                        <th class="text-center">상호</th>
-                        <th class="text-center">대표자명</th>
-                        <th class="text-center">담당자명</th>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">업무구분</th>
+                        <th class="text-center">주제</th>
+                        <th class="text-center">날짜</th>
+                        <th class="text-center">지역</th>
+                        <th class="text-center">기관유형</th>
                     </tr>
                     <tr class="text-center"  *ngIf="results.length==0">
                         <td colspan="4">검색된 내용이 없습니다.</td>

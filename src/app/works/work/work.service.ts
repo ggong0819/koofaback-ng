@@ -37,7 +37,7 @@ export class WorkService extends NetService{
 
 
   searchWorkRequest (param : any){
-    return super.reqPost('/work/workRequestList.ajax', param, this.jsonHeaders);
+    return super.reqPost('/work/requestList.ajax', param, this.jsonHeaders);
   }
 
   getWorkRequestDetail (workRequestId : any){

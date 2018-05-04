@@ -30,12 +30,29 @@ var CommonCodeResolver = (function () {
             return this.netService.reqGetPromise('/code/allCodeList.ajax')
                 .then(function (res) {
                 var commonCode = new common_code_item_1.CommonCodeItem();
+                console.log(res);
+                console.log(res.result);
                 //아래 공통 코드 추가/삭제/수정시 common.service.ts에도 같이 수정해야 합니다.
                 for (var _i = 0, _a = res.result; _i < _a.length; _i++) {
                     var base = _a[_i];
                     switch (base.codeId) {
-                        case 10001:
+                        case '10012':
                             commonCode.setLocationCodeList(base.childCodeList);
+                            break;
+                        case '10007':
+                            commonCode.setWorkTypeCodeList(base.childCodeList);
+                            break;
+                        case '10010':
+                            commonCode.setTargetCodeList(base.childCodeList);
+                            break;
+                        case '10008':
+                            commonCode.setCustomerTypeCodeList(base.childCodeList);
+                            break;
+                        case '10009':
+                            commonCode.setSubjectCodeList(base.childCodeList);
+                            break;
+                        case '10011':
+                            commonCode.setTimesCodeList(base.childCodeList);
                             break;
                     }
                 }

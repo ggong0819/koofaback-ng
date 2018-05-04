@@ -8,7 +8,7 @@ import { WorksRouting }  from './works.routing';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { ModalModule} from 'ngx-bootstrap';
 
-import { WorkListComponent, WorkRequestListComponent, WorkService}    from './work/work.index';
+import { WorkListComponent, WorkRequestListComponent, WorkService, WorkRequestDetailComponent}    from './work/work.index';
 import { CustomerService}    from '../sales/customer/customer.service';
 
 @NgModule({
@@ -23,7 +23,8 @@ import { CustomerService}    from '../sales/customer/customer.service';
   ],
   declarations:[ 
     WorkListComponent,
-    WorkRequestListComponent
+    WorkRequestListComponent,
+    WorkRequestDetailComponent
   ],
   providers:[ 
     WorksService,
@@ -33,6 +34,6 @@ import { CustomerService}    from '../sales/customer/customer.service';
   ]
 })
 
-export class WorkModule {
+export class WorksModule {
 
 }

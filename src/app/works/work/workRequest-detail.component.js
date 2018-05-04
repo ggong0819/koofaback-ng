@@ -26,6 +26,7 @@ var component_1 = require("../../common/component");
 var work_service_1 = require("./work.service");
 var customer_service_1 = require("../../sales/customer/customer.service");
 var main_content_component_1 = require("../../layout/main-content.component");
+var SelectBoxComponent_1 = require("../../common/components/selectbox/SelectBoxComponent");
 var WorkRequestDetailComponent = (function (_super) {
     __extends(WorkRequestDetailComponent, _super);
     function WorkRequestDetailComponent(route, router, fb, mainComponent, workService, customerService, resolver) {
@@ -41,13 +42,9 @@ var WorkRequestDetailComponent = (function (_super) {
         _this.isCreateMode = false;
         //거래처 리스트
         _this.customerInfoList = [];
-        //1차구분 코드 리스트
-        _this.type1CodeList = [];
-        //1차구분 코드 리스트
-        _this.type2CodeList = [];
         _this.submitTitle = '등록';
         _this.insertForm = _this.fb.group({
-            customerId: [],
+            workRequestId: [],
             corpName: [],
             corpRegNum: [],
             representPersonName: [],
@@ -60,8 +57,11 @@ var WorkRequestDetailComponent = (function (_super) {
         _this.route.data
             .subscribe(function (data) {
             var commonCode = data.commonCode;
-            _this.type1CodeList = commonCode.getType1CodeList();
-            _this.type2CodeList = commonCode.getType2CodeList();
+            _this.workTypeCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+            _this.workTypeCodeList.concat(commonCode.getWorkTypeCodeList());
+            _this.locationCodeList = commonCode.getLocationCodeList();
+            _this.targetCodeList = commonCode.getTargetCodeList();
+            _this.workUserList = commonCode.getWorkUserList();
         });
         return _this;
     }
@@ -69,7 +69,6 @@ var WorkRequestDetailComponent = (function (_super) {
         var _this = this;
         //거래처 리스트 받아오기
         var formData;
-        formData.listSize = 100000;
         var observable = this.customerService.search(formData);
         observable.subscribe(function (response) {
             if (response.result) {
@@ -188,10 +187,14 @@ var WorkRequestDetailComponent = (function (_super) {
     };
     return WorkRequestDetailComponent;
 }(component_1.CommonComponent));
+__decorate([
+    core_1.ViewChild(SelectBoxComponent_1.SelectBoxComponent),
+    __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
+], WorkRequestDetailComponent.prototype, "workTypeSelectBox", void 0);
 WorkRequestDetailComponent = __decorate([
     core_1.Component({
         moduleId: module.id,
-        templateUrl: 'work-detail.component.html',
+        templateUrl: 'workRequest-detail.component.html',
         providers: [work_service_1.WorkService]
     }),
     __metadata("design:paramtypes", [router_1.ActivatedRoute,

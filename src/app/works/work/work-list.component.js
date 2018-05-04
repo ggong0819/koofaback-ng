@@ -41,14 +41,22 @@ var WorkListComponent = (function (_super) {
         _this.realListSize = 20;
         mainComponent.menu = {
             category: "Work",
-            menu: "업무요청관리"
+            menu: "업무관리"
         };
         _this.searchTypeOptions = [
-            { id: "corpName", name: '상호' },
-            { id: "representPersonName", name: '주제' },
-            { id: "corpRegNum", name: '업무번호' },
-            { id: "personName", name: '담당자명' }
+            { id: "corpName", name: '거래처명' },
+            { id: "subject", name: '주제' },
+            { id: "workId", name: '업무번호' },
+            { id: "personName", name: '담당자명' },
+            { id: "location", name: '지역' },
         ];
+        //최초 가지고 와야할 코드들..
+        _this.route.data
+            .subscribe(function (data) {
+            var commonCode = data.commonCode;
+            _this.workTypeCodeList = commonCode.getWorkTypeCodeList();
+            _this.locationCodeList = commonCode.getLocationCodeList();
+        });
         return _this;
     }
     WorkListComponent.prototype.ngOnInit = function () {

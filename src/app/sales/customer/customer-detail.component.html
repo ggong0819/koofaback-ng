@@ -1,6 +1,7 @@
 <div class="row">
     <form [formGroup]="insertForm" class="form-horizontal">
         <input type="hidden" formControlName="customerId" value="{{customerInfo.customerId}}">
+        <input type="hidden" formControlName="customerTypeCode" value="{{customerInfo.customerTypeCode}}">
     <div class="col-xs-12">
         <div id="boxDiv1" class="box">
             <div class="box-header">
@@ -34,6 +35,12 @@
                             <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사업장주소</th>
                             <td colspan="3" class="col-sm-10">
                                 <input type="text" class="form-control" formControlName="address" value="{{customerInfo.address}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">기관유형</th>
+                            <td colspan="3" class="col-sm-10">
+                                <options-selector #customerTypeCodeBox *ngIf="customerTypeCodeList != null" [cssClass]="'form-control'" [inputCodeList]="customerTypeCodeList" [defaultOptionValue]="defaultCustomerTypeCode" ></options-selector>
                             </td>
                         </tr>
                         <tr role="row">

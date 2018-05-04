@@ -1,6 +1,7 @@
 <div class="row">
     <form [formGroup]="insertForm" class="form-horizontal">
         <input type="hidden" formControlName="workRequestId" value="{{workRequestInfo.workRequestId}}">
+        <input type="hidden" formControlName="workTypeCode" value="{{workRequestInfo.workTypeCode}}">
     <div class="col-xs-12">
         <div id="boxDiv1" class="box">
             <div class="box-header">
@@ -21,23 +22,9 @@
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">1차구분</th>
-                            <td class="col-sm-4">
-                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="type1Code">
-                                    <option value="">1차구분선택</option>
-                                    <ng-container *ngFor="let customer of customerInfoList">
-                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
-                                    </ng-container>
-                                </select>
-                            </td>
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">2차구분</th>
-                            <td class="col-sm-4">
-                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="type2Code">
-                                    <option value="">2차구분선택</option>
-                                    <ng-container *ngFor="let customer of customerInfoList">
-                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
-                                    </ng-container>
-                                </select>
+                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업무구분</th>
+                            <td colspan="3" class="col-sm-10">
+                                <options-selector #workCodeBox *ngIf="workTypeCodeList != null" [cssClass]="'form-control'" [inputCodeList]="workTypeCodeList" [defaultOptionValue]="defaultWorkTypeCode" ></options-selector>
                             </td>
                         </tr>
                         <tr role="row">

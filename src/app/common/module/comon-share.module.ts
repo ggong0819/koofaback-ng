@@ -11,6 +11,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { RegModfComponent } from '../components/RegModfComponent';
 import { TreeNodeView, TreeView } from '../components/tree/tree.component';
 import { ListSelectComponent } from '../components/ListSelectComponent';
+import { SelectBoxComponent } from '../components/selectbox/SelectBoxComponent';
 
 import { PlayerComponent } from '../components/player/player.component';
 
@@ -30,6 +31,7 @@ import { PlayerComponent } from '../components/player/player.component';
         TreeView,
         TreeNodeView,
         ListSelectComponent,
+        SelectBoxComponent,
         PlayerComponent,
     ],
     exports:[
@@ -39,6 +41,7 @@ import { PlayerComponent } from '../components/player/player.component';
         TreeView,
         TreeNodeView,   
         ListSelectComponent,
+        SelectBoxComponent,
         PlayerComponent,
     ],
     providers:[

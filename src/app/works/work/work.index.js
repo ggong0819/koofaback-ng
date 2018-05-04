@@ -5,6 +5,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./work-list.component"));
 __export(require("./workRequest-list.component"));
+__export(require("./workRequest-detail.component"));
 __export(require("./work.service"));
 __export(require("./model/Work"));
 __export(require("./model/WorkRequest"));
