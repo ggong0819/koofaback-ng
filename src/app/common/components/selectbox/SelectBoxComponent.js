@@ -17,17 +17,20 @@ var SelectBoxComponent = (function () {
     }
     SelectBoxComponent.prototype.ngOnInit = function () {
         //input으로 받은 공통 코드를 OptionModel로 변경한다.
-        for (var _i = 0, _a = this.inputCodeList; _i < _a.length; _i++) {
-            var commonCode = _a[_i];
+        this.setOptionList(this.inputCodeList);
+        if (null == this.cssClass) {
+            this.cssClass = "form-control";
+        }
+        this.setOpionValue(this.defaultOptionValue);
+    };
+    SelectBoxComponent.prototype.setOptionList = function (optionList) {
+        for (var _i = 0, optionList_1 = optionList; _i < optionList_1.length; _i++) {
+            var commonCode = optionList_1[_i];
             var option = new OptionModel_1.OptionModel();
             option.name = commonCode.codeName;
             option.value = commonCode.codeId;
             this.optionList.push(option);
         }
-        if (null == this.cssClass) {
-            this.cssClass = "form-control";
-        }
-        this.setOpionValue(this.defaultOptionValue);
     };
     SelectBoxComponent.prototype.setOpionValue = function (value) {
         this.selectedValue = value;

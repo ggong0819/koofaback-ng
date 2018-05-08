@@ -21,7 +21,17 @@ export class SelectBoxComponent{
 
     ngOnInit(){
         //input으로 받은 공통 코드를 OptionModel로 변경한다.
-        for (let commonCode of this.inputCodeList) {
+        this.setOptionList(this.inputCodeList);
+
+        if (null == this.cssClass) {
+            this.cssClass = "form-control";
+        }
+
+        this.setOpionValue(this.defaultOptionValue);
+    }
+
+    public setOptionList (optionList:any){
+        for (let commonCode of optionList) {
             
             var option: OptionModel = new OptionModel();
             option.name = commonCode.codeName;
@@ -29,12 +39,6 @@ export class SelectBoxComponent{
 
             this.optionList.push(option);
         }
-
-        if (null == this.cssClass) {
-            this.cssClass = "form-control";
-        }
-
-        this.setOpionValue(this.defaultOptionValue);
     }
 
     public setOpionValue(value:any){

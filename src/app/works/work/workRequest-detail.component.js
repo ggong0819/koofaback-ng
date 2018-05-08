@@ -45,34 +45,56 @@ var WorkRequestDetailComponent = (function (_super) {
         _this.submitTitle = '등록';
         _this.insertForm = _this.fb.group({
             workRequestId: [],
-            corpName: [],
-            corpRegNum: [],
-            representPersonName: [],
-            address: [],
-            businessCondition: [],
-            businessItem: [],
-            homepageUrl: []
+            customerId: [],
+            workTypeCode: [],
+            locationCode: [],
+            subject: [],
+            hopeDt: [],
+            executeDt: [],
+            locationDetail: [],
+            targetCodes: [],
+            participantCount: [],
+            budget: [],
+            requestDt: [],
+            inboundRoute: [],
+            chargeUserId: [],
         });
         //최초 가지고 와야할 코드들..
         _this.route.data
             .subscribe(function (data) {
             var commonCode = data.commonCode;
             _this.workTypeCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
-            _this.workTypeCodeList.concat(commonCode.getWorkTypeCodeList());
-            _this.locationCodeList = commonCode.getLocationCodeList();
+            for (var _i = 0, _a = commonCode.getWorkTypeCodeList(); _i < _a.length; _i++) {
+                var code = _a[_i];
+                _this.workTypeCodeList.push(code);
+            }
+            _this.locationCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+            for (var _b = 0, _c = commonCode.getLocationCodeList(); _b < _c.length; _b++) {
+                var code = _c[_b];
+                _this.locationCodeList.push(code);
+            }
             _this.targetCodeList = commonCode.getTargetCodeList();
-            _this.workUserList = commonCode.getWorkUserList();
+            _this.workUserList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+            // for (let code of commonCode.getWorkUserList()) {
+            //     this.workUserList.push(code);
+            // }
         });
         return _this;
     }
     WorkRequestDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         //거래처 리스트 받아오기
-        var formData;
-        var observable = this.customerService.search(formData);
+        var observable = this.customerService.getAllCustomerList();
         observable.subscribe(function (response) {
             if (response.result) {
-                _this.customerInfoList = response.result.list;
+                _this.customerInfoList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+                if (response.result.list) {
+                    for (var _i = 0, _a = response.result.list; _i < _a.length; _i++) {
+                        var code = _a[_i];
+                        _this.customerInfoList.push(code);
+                    }
+                    _this.customerSelectBox.setOptionList(_this.customerInfoList);
+                }
             }
             else {
                 _this.customerInfoList.length = 0;
@@ -106,13 +128,31 @@ var WorkRequestDetailComponent = (function (_super) {
                 if (response.workRequestInfo) {
                     _this.workRequestInfo = response.workRequestInfo;
                     _this.insertForm.controls['workRequestId'].setValue(_this.workRequestInfo.workRequestId, {});
-                    _this.insertForm.controls['corpName'].setValue(_this.workRequestInfo.corpName, {});
-                    _this.insertForm.controls['corpRegNum'].setValue(_this.workRequestInfo.corpRegNum, {});
-                    _this.insertForm.controls['representPersonName'].setValue(_this.workRequestInfo.representPersonName, {});
-                    _this.insertForm.controls['address'].setValue(_this.workRequestInfo.address, {});
-                    _this.insertForm.controls['businessCondition'].setValue(_this.workRequestInfo.businessCondition, {});
-                    _this.insertForm.controls['businessItem'].setValue(_this.workRequestInfo.businessItem, {});
-                    _this.insertForm.controls['homepageUrl'].setValue(_this.workRequestInfo.homepageUrl, {});
+                    _this.insertForm.controls['customerId'].setValue(_this.workRequestInfo.customerId, {});
+                    _this.insertForm.controls['workTypeCode'].setValue(_this.workRequestInfo.workTypeCode, {});
+                    _this.insertForm.controls['subject'].setValue(_this.workRequestInfo.subject, {});
+                    _this.insertForm.controls['hopeDt'].setValue(_this.workRequestInfo.hopeDt, {});
+                    _this.insertForm.controls['executeDt'].setValue(_this.workRequestInfo.executeDt, {});
+                    _this.insertForm.controls['locationCode'].setValue(_this.workRequestInfo.locationCode, {});
+                    _this.insertForm.controls['locationDetail'].setValue(_this.workRequestInfo.locationDetail, {});
+                    _this.insertForm.controls['targetCodes'].setValue(_this.workRequestInfo.targetCodes, {});
+                    _this.insertForm.controls['participantCount'].setValue(_this.workRequestInfo.participantCount, {});
+                    _this.insertForm.controls['budget'].setValue(_this.workRequestInfo.budget, {});
+                    _this.insertForm.controls['requestDt'].setValue(_this.workRequestInfo.requestDt, {});
+                    _this.insertForm.controls['inboundRoute'].setValue(_this.workRequestInfo.inboundRoute, {});
+                    _this.insertForm.controls['chargeUserId'].setValue(_this.workRequestInfo.chargeUserId, {});
+                    if (null != _this.workRequestInfo.customerId) {
+                        _this.customerSelectBox.setOpionValue(_this.workRequestInfo.customerId);
+                    }
+                    if (null != _this.workRequestInfo.workTypeCode) {
+                        _this.workTypeCodeSelectBox.setOpionValue(_this.workRequestInfo.customerTypeCode);
+                    }
+                    if (null != _this.workRequestInfo.locationCode) {
+                        _this.locationSelectBox.setOpionValue(_this.workRequestInfo.locationCode);
+                    }
+                    if (null != _this.workRequestInfo.chargeUserId) {
+                        _this.workUserSelectBox.setOpionValue(_this.workRequestInfo.chargeUserId);
+                    }
                     _this.initFormData = _this.insertForm.value;
                 }
             }, function (error) {
@@ -123,7 +163,7 @@ var WorkRequestDetailComponent = (function (_super) {
         }
     };
     WorkRequestDetailComponent.prototype.goList = function () {
-        this.router.navigate(['/sales/customer/list']);
+        this.router.navigate(['/works/request/list']);
     };
     WorkRequestDetailComponent.prototype.save = function () {
         if (!confirm('저장하시겠습니까?')) {
@@ -188,9 +228,21 @@ var WorkRequestDetailComponent = (function (_super) {
     return WorkRequestDetailComponent;
 }(component_1.CommonComponent));
 __decorate([
-    core_1.ViewChild(SelectBoxComponent_1.SelectBoxComponent),
+    core_1.ViewChild("customerBox"),
     __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
-], WorkRequestDetailComponent.prototype, "workTypeSelectBox", void 0);
+], WorkRequestDetailComponent.prototype, "customerSelectBox", void 0);
+__decorate([
+    core_1.ViewChild("workTypeCodeBox"),
+    __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
+], WorkRequestDetailComponent.prototype, "workTypeCodeSelectBox", void 0);
+__decorate([
+    core_1.ViewChild("locationCodeBox"),
+    __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
+], WorkRequestDetailComponent.prototype, "locationSelectBox", void 0);
+__decorate([
+    core_1.ViewChild("workUserBox"),
+    __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
+], WorkRequestDetailComponent.prototype, "workUserSelectBox", void 0);
 WorkRequestDetailComponent = __decorate([
     core_1.Component({
         moduleId: module.id,

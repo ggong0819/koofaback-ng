@@ -29,7 +29,10 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
     private isCreateMode: boolean = false;
     private defaultWorkTypeCode: any;
 
-    @ViewChild(SelectBoxComponent) workTypeSelectBox : SelectBoxComponent;
+    @ViewChild("customerBox") customerSelectBox : SelectBoxComponent;
+    @ViewChild("workTypeCodeBox") workTypeCodeSelectBox : SelectBoxComponent;
+    @ViewChild("locationCodeBox") locationSelectBox : SelectBoxComponent;
+    @ViewChild("workUserBox") workUserSelectBox : SelectBoxComponent;
 
     //거래처 리스트
     customerInfoList:any = [];
@@ -43,17 +46,23 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
    //업무 담당자 직원리스트
    private workUserList:any;
 
-    submitTitle: string = '등록';
+   private submitTitle: string = '등록';
 
     public insertForm = this.fb.group({
         workRequestId:[],
-        corpName:[],
-        corpRegNum:[],
-        representPersonName : [ ],
-        address : [],
-        businessCondition : [],
-        businessItem : [],
-        homepageUrl : []
+        customerId:[],
+        workTypeCode:[],
+        locationCode:[],
+        subject:[],
+        hopeDt:[],
+        executeDt:[],
+        locationDetail:[],
+        targetCodes:[],
+        participantCount:[],
+        budget:[],
+        requestDt:[],
+        inboundRoute:[],
+        chargeUserId:[],
      });
 
      constructor(
@@ -73,10 +82,21 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
             let commonCode = <CommonCodeItem>data.commonCode;
 
             this.workTypeCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
-            this.workTypeCodeList.concat(commonCode.getWorkTypeCodeList());
-            this.locationCodeList = commonCode.getLocationCodeList();
+            for (let code of commonCode.getWorkTypeCodeList()) {
+                this.workTypeCodeList.push(code);
+            }
+
+            this.locationCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
+            for (let code of commonCode.getLocationCodeList()) {
+                this.locationCodeList.push(code);
+            }
+
             this.targetCodeList = commonCode.getTargetCodeList();
-            this.workUserList = commonCode.getWorkUserList();
+
+            this.workUserList = [{codeId:'', codeName:'선택', childCodeList:null}];
+            // for (let code of commonCode.getWorkUserList()) {
+            //     this.workUserList.push(code);
+            // }
         });
 
 
@@ -84,13 +104,18 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
 
     ngOnInit(): void {
         //거래처 리스트 받아오기
-        let formData :any;
-
-        let observable = this.customerService.search(formData);
+        let observable = this.customerService.getAllCustomerList();
         observable.subscribe(
             response => {
                 if (response.result) {
-                    this.customerInfoList = response.result.list;
+                    this.customerInfoList = [{codeId:'', codeName:'선택', childCodeList:null}];
+                    if (response.result.list) {
+                        for (let code of response.result.list) {
+                            this.customerInfoList.push(code);
+                        }
+
+                        this.customerSelectBox.setOptionList(this.customerInfoList);
+                    }
                 } else {
                     this.customerInfoList.length = 0;
                 }
@@ -130,13 +155,32 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
                         this.workRequestInfo = response.workRequestInfo;
                         
                         this.insertForm.controls['workRequestId'].setValue(this.workRequestInfo.workRequestId, {});
-                        this.insertForm.controls['corpName'].setValue(this.workRequestInfo.corpName, {});
-                        this.insertForm.controls['corpRegNum'].setValue(this.workRequestInfo.corpRegNum, {});
-                        this.insertForm.controls['representPersonName'].setValue(this.workRequestInfo.representPersonName, {});
-                        this.insertForm.controls['address'].setValue(this.workRequestInfo.address, {});
-                        this.insertForm.controls['businessCondition'].setValue(this.workRequestInfo.businessCondition, {});
-                        this.insertForm.controls['businessItem'].setValue(this.workRequestInfo.businessItem, {});
-                        this.insertForm.controls['homepageUrl'].setValue(this.workRequestInfo.homepageUrl, {});
+                        this.insertForm.controls['customerId'].setValue(this.workRequestInfo.customerId, {});
+                        this.insertForm.controls['workTypeCode'].setValue(this.workRequestInfo.workTypeCode, {});
+                        this.insertForm.controls['subject'].setValue(this.workRequestInfo.subject, {});
+                        this.insertForm.controls['hopeDt'].setValue(this.workRequestInfo.hopeDt, {});
+                        this.insertForm.controls['executeDt'].setValue(this.workRequestInfo.executeDt, {});
+                        this.insertForm.controls['locationCode'].setValue(this.workRequestInfo.locationCode, {});
+                        this.insertForm.controls['locationDetail'].setValue(this.workRequestInfo.locationDetail, {});
+                        this.insertForm.controls['targetCodes'].setValue(this.workRequestInfo.targetCodes, {});
+                        this.insertForm.controls['participantCount'].setValue(this.workRequestInfo.participantCount, {});
+                        this.insertForm.controls['budget'].setValue(this.workRequestInfo.budget, {});
+                        this.insertForm.controls['requestDt'].setValue(this.workRequestInfo.requestDt, {});
+                        this.insertForm.controls['inboundRoute'].setValue(this.workRequestInfo.inboundRoute, {});
+                        this.insertForm.controls['chargeUserId'].setValue(this.workRequestInfo.chargeUserId, {});
+
+                        if (null != this.workRequestInfo.customerId) {
+                            this.customerSelectBox.setOpionValue(this.workRequestInfo.customerId);
+                        }
+                        if (null != this.workRequestInfo.workTypeCode) {
+                            this.workTypeCodeSelectBox.setOpionValue(this.workRequestInfo.customerTypeCode);
+                        }
+                        if (null != this.workRequestInfo.locationCode) {
+                            this.locationSelectBox.setOpionValue(this.workRequestInfo.locationCode);
+                        }
+                        if (null != this.workRequestInfo.chargeUserId) {
+                            this.workUserSelectBox.setOpionValue(this.workRequestInfo.chargeUserId);
+                        }
 
                         this.initFormData = this.insertForm.value;
                     }
@@ -152,7 +196,7 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
     }
 
     goList(){
-        this.router.navigate(['/sales/customer/list']);
+        this.router.navigate(['/works/request/list']);
     }
 
     save(){

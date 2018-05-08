@@ -1,7 +1,11 @@
 <div class="row">
     <form [formGroup]="insertForm" class="form-horizontal">
         <input type="hidden" formControlName="workRequestId" value="{{workRequestInfo.workRequestId}}">
+        <input type="hidden" formControlName="customerId" value="{{workRequestInfo.customerId}}">
         <input type="hidden" formControlName="workTypeCode" value="{{workRequestInfo.workTypeCode}}">
+        <input type="hidden" formControlName="locationCode" value="{{workRequestInfo.locationCode}}">
+        <input type="hidden" formControlName="targetCodes" value="{{workRequestInfo.targetCodes}}">
+        <input type="hidden" formControlName="chargeUserId" value="{{workRequestInfo.chargeUserId}}">
     <div class="col-xs-12">
         <div id="boxDiv1" class="box">
             <div class="box-header">
@@ -11,69 +15,95 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">거래처</th>
-                            <td colspan="3" class="col-sm-10">
-                                <select class="form-control" style="width:200px;display:inline-block;margin-left:10px;"  formControlName="customerId">
-                                    <option value="">거래처 선택</option>
-                                    <ng-container *ngFor="let customer of customerInfoList">
-                                    <option value="{{customer.customerId}}">{{bookCompany.corpName}}</option>
-                                    </ng-container>
-                                </select>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">거래처</th>
+                            <td colspan="3" class="col-sm-11">
+                                <options-selector #customerBox *ngIf="customerInfoList != null" [cssClass]="'empty'" [inputCodeList]="customerInfoList" [defaultOptionValue]="''"></options-selector>
+                            </td>
+                        </tr>
+
+                        <tr role="row">
+                            <th rowspan="7" class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">시행관련</th>
+                        </tr>
+
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업무구분</th>
+                            <td colspan="2" class="col-sm-10">
+                                <options-selector #workTypeCodeBox *ngIf="workTypeCodeList != null" [cssClass]="'empty'" [inputCodeList]="workTypeCodeList"  [defaultOptionValue]="''"></options-selector>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업무구분</th>
-                            <td colspan="3" class="col-sm-10">
-                                <options-selector #workCodeBox *ngIf="workTypeCodeList != null" [cssClass]="'form-control'" [inputCodeList]="workTypeCodeList" [defaultOptionValue]="defaultWorkTypeCode" ></options-selector>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">주제</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="subject" value="{{workRequestInfo.subject}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사업자등록번호</th>
-                            <td colspan="3" class="col-sm-10">
-                                <input type="text" class="form-control" formControlName="corpRegNum" value="{{customerInfo.corpRegNum}}"/>
-                                <button id="btnImgUpload" type="button" class="btn btn-primary" (click)="fileInput.click()">첨부</button>
-                                <span style="display: none;"><input type="file" #fileInput name="imgFile" (change)="selectFile($event)"/></span>
-                                <button *ngIf="corpRegistFilePath != null &&  '' != corpRegistFilePath" (click)="getImage()">사업자등록증 다운로드</button>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="hopeDt" value="{{workRequestInfo.hopeDt}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">대표자이름</th>
-                            <td colspan="3" class="col-sm-10">
-                                <input type="text" class="form-control" formControlName="representPersonName" value="{{customerInfo.representPersonName}}"/>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">시행날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="executeDt" value="{{workRequestInfo.executeDt}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">사업장주소</th>
-                            <td colspan="3" class="col-sm-10">
-                                <input type="text" class="form-control" formControlName="address" value="{{customerInfo.address}}"/>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">장소</th>
+                            <td colspan="2" class="col-sm-10">
+                                <options-selector #locationCodeBox *ngIf="locationCodeList != null" [cssClass]="'empty'" [inputCodeList]="locationCodeList" [defaultOptionValue]="''"></options-selector>
+                                <br/>
+                                <span>구체적 장소</span>
+                                <input type="text" class="form-control" formControlName="locationDetail" value="{{workRequestInfo.locationDetail}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업태</th>
-                            <td class="col-sm-4">
-                                <input type="text" class="form-control" formControlName="businessCondition" value="{{customerInfo.businessCondition}}"/>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">대상</th>
+                            <td colspan="2" class="col-sm-10">
+                                <ng-container *ngIf="null != targetCodeList">
+                                    <span *ngFor="let item of targetCodeList;let i = index;" style="margin-left:10px;">
+                                        <input type="checkbox" value="{{item.codeId}}"/> {{item.codeName}}
+                                    </span>
+                                </ng-container>
                             </td>
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">종목</th>
-                            <td class="col-sm-4">
-                                <input type="text" class="form-control" formControlName="businessItem" value="{{customerInfo.businessItem}}"/>
+                        </tr>
+
+                        <tr role="row">
+                            <th rowspan="6" class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">요청사항</th>
+                        </tr>
+
+
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">인원</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="participantCount" value="{{workRequestInfo.participantCount}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-sm-2 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">홈페이지주소</th>
-                            <td colspan="3" class="col-sm-10">
-                                <input type="text" class="form-control" formControlName="homepageUrl" value="{{customerInfo.homepageUrl}}"/>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">예산</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="budget" value="{{workRequestInfo.budget}}"/>
                             </td>
                         </tr>
                         <tr role="row">
-                            <th class="col-md-2 text-center">
-                                <span>담당자 정보</span>
-                                <br>
-                                <button type="button" class="btn btn-primary" (click)="addRow();">추가</button>
-                            </th>
-                            <td class="col-md-10" colspan="3">
-                                <ng-container person></ng-container>
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">접수날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="requestDt" value="{{workRequestInfo.requestDt}}"/>
                             </td>
                         </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">접수경로</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="inboundRoute" value="{{workRequestInfo.inboundRoute}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                                <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">담당자</th>
+                                <td colspan="2" class="col-sm-10">
+                                        <options-selector #workUserBox *ngIf="workUserList != null" [cssClass]="'empty'" [inputCodeList]="workUserList" [defaultOptionValue]="''"></options-selector>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
                 <reg-modf *ngIf="!isCreateMode && customerInfo != null" [info]="customerInfo"></reg-modf>
