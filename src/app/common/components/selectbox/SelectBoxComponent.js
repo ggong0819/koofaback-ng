@@ -29,6 +29,9 @@ var SelectBoxComponent = (function () {
             var option = new OptionModel_1.OptionModel();
             option.name = commonCode.codeName;
             option.value = commonCode.codeId;
+            if (commonCode.extraInfo) {
+                option.extraInfo = commonCode.extraInfo;
+            }
             this.optionList.push(option);
         }
     };

@@ -74,10 +74,6 @@ var WorkRequestDetailComponent = (function (_super) {
                 _this.locationCodeList.push(code);
             }
             _this.targetCodeList = commonCode.getTargetCodeList();
-            _this.workUserList = [{ codeId: '', codeName: '선택', childCodeList: null }];
-            // for (let code of commonCode.getWorkUserList()) {
-            //     this.workUserList.push(code);
-            // }
         });
         return _this;
     }
@@ -106,6 +102,37 @@ var WorkRequestDetailComponent = (function (_super) {
                 }
                 else {
                     alert('거래처 정보를 가지고 올 수 없습니다.\n' + error);
+                }
+            }
+        });
+        var workUserStatus = "";
+        //등록할 땐 현재 유효한 사용자 리스트만 보여준다.
+        if (this.isCreateMode) {
+            workUserStatus = "0";
+        }
+        //담당자 리스트 가지고 오기
+        var workUserObservable = this.workService.getWorkUserList(workUserStatus);
+        workUserObservable.subscribe(function (response) {
+            if (response.result) {
+                _this.workUserList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+                if (response.result.list) {
+                    for (var _i = 0, _a = response.result.list; _i < _a.length; _i++) {
+                        var code = _a[_i];
+                        _this.workUserList.push(code);
+                    }
+                    _this.workUserSelectBox.setOptionList(_this.workUserList);
+                }
+            }
+            else {
+                _this.workUserList.length = 0;
+            }
+        }, function (error) {
+            if (error) {
+                if (error.result && error.result.errorMsg) {
+                    alert('담당자 정보를 가지고 올 수 없습니다.\n' + error.result.errorMsg);
+                }
+                else {
+                    alert('담당자 정보를 가지고 올 수 없습니다.\n' + error);
                 }
             }
         });
@@ -169,27 +196,28 @@ var WorkRequestDetailComponent = (function (_super) {
         if (!confirm('저장하시겠습니까?')) {
             return false;
         }
-        var formData = this.insertForm.value;
-        var mFormData = new FormData();
-        mFormData.append("customerId", formData.customerId);
-        mFormData.append("corpName", formData.corpName);
-        mFormData.append("corpRegNum", formData.corpRegNum);
-        mFormData.append("representPersonName", formData.representPersonName);
-        mFormData.append("address", formData.address);
-        mFormData.append("businessCondition", formData.businessCondition);
-        mFormData.append("businessItem", formData.businessItem);
-        mFormData.append("homepageUrl", formData.homepageUrl);
+        var formData = null;
+        var customerId = this.customerSelectBox.getSelectedValue();
+        var workTypeCode = this.workTypeCodeSelectBox.getSelectedValue();
+        var locationCode = this.locationSelectBox.getSelectedValue();
+        var chargeUserId = this.workUserSelectBox.getSelectedValue();
+        var targetCodes;
+        this.insertForm.controls['customerId'].setValue(customerId, {});
+        this.insertForm.controls['workTypeCode'].setValue(workTypeCode, {});
+        this.insertForm.controls['locationCode'].setValue(locationCode, {});
+        this.insertForm.controls['chargeUserId'].setValue(chargeUserId, {});
+        this.insertForm.controls['targetCodes'].setValue(targetCodes, {});
         if (this.isCreateMode) {
-            this.insertWorkRequest(mFormData);
+            this.registWorkRequest(this.insertForm.value);
         }
         else {
-            this.updateWorkRequest(mFormData);
+            this.updateWorkRequest(this.insertForm.value);
         }
     };
     WorkRequestDetailComponent.prototype.pageChanged = function (event) {
         _super.prototype.setPage.call(this, event);
     };
-    WorkRequestDetailComponent.prototype.insertWorkRequest = function (formData) {
+    WorkRequestDetailComponent.prototype.registWorkRequest = function (formData) {
         var _this = this;
         var observable = this.workService.registWorkRequest(formData);
         observable.subscribe(function (response) {

@@ -36,6 +36,9 @@ export class SelectBoxComponent{
             var option: OptionModel = new OptionModel();
             option.name = commonCode.codeName;
             option.value = commonCode.codeId;
+            if (commonCode.extraInfo) {
+                option.extraInfo = commonCode.extraInfo
+            }
 
             this.optionList.push(option);
         }

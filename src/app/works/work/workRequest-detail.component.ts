@@ -2,7 +2,7 @@ import { Component, OnInit, SecurityContext, ViewChild, ComponentFactoryResolver
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { CommonComponent} from '../../common/component'
+import { CommonComponent } from '../../common/component'
 import { ModalDirective } from 'ngx-bootstrap';
 
 import { WorkRequest } from './model/WorkRequest';
@@ -10,7 +10,7 @@ import { WorkService } from './work.service';
 import { CustomerService } from '../../sales/customer/customer.service';
 
 import { MainContentComponent } from '../../layout/main-content.component';
-import {CommonCodeItem} from '../../services/common-code.item';
+import { CommonCodeItem } from '../../services/common-code.item';
 
 import { SelectBoxComponent } from '../../common/components/selectbox/SelectBoxComponent';
 
@@ -19,85 +19,79 @@ import { config } from '../../config/config';
 @Component({
     moduleId: module.id,
     templateUrl: 'workRequest-detail.component.html',
-    providers: [ WorkService]
+    providers: [WorkService]
 })
 
-export class WorkRequestDetailComponent extends CommonComponent implements OnInit  {
-    private initFormData:any;
-    private workRequestId : any;
-    private workRequestInfo : any = {};
+export class WorkRequestDetailComponent extends CommonComponent implements OnInit {
+    private initFormData: any;
+    private workRequestId: any;
+    private workRequestInfo: any = {};
     private isCreateMode: boolean = false;
-    private defaultWorkTypeCode: any;
 
-    @ViewChild("customerBox") customerSelectBox : SelectBoxComponent;
-    @ViewChild("workTypeCodeBox") workTypeCodeSelectBox : SelectBoxComponent;
-    @ViewChild("locationCodeBox") locationSelectBox : SelectBoxComponent;
-    @ViewChild("workUserBox") workUserSelectBox : SelectBoxComponent;
+    @ViewChild("customerBox") customerSelectBox: SelectBoxComponent;
+    @ViewChild("workTypeCodeBox") workTypeCodeSelectBox: SelectBoxComponent;
+    @ViewChild("locationCodeBox") locationSelectBox: SelectBoxComponent;
+    @ViewChild("workUserBox") workUserSelectBox: SelectBoxComponent;
 
     //거래처 리스트
-    customerInfoList:any = [];
+    customerInfoList: any = [];
 
-   //업무구분 코드리스트
-   private workTypeCodeList:any;
-   //지역 코드 리스트
-   private locationCodeList:any;
-   //대상 코드 리스트
-   private targetCodeList:any;
-   //업무 담당자 직원리스트
-   private workUserList:any;
+    //업무구분 코드리스트
+    private workTypeCodeList: any;
+    //지역 코드 리스트
+    private locationCodeList: any;
+    //대상 코드 리스트
+    private targetCodeList: any;
+    //업무 담당자 직원리스트
+    private workUserList: any;
 
-   private submitTitle: string = '등록';
+    private submitTitle: string = '등록';
 
     public insertForm = this.fb.group({
-        workRequestId:[],
-        customerId:[],
-        workTypeCode:[],
-        locationCode:[],
-        subject:[],
-        hopeDt:[],
-        executeDt:[],
-        locationDetail:[],
-        targetCodes:[],
-        participantCount:[],
-        budget:[],
-        requestDt:[],
-        inboundRoute:[],
-        chargeUserId:[],
-     });
+        workRequestId: [],
+        customerId: [],
+        workTypeCode: [],
+        locationCode: [],
+        subject: [],
+        hopeDt: [],
+        executeDt: [],
+        locationDetail: [],
+        targetCodes: [],
+        participantCount: [],
+        budget: [],
+        requestDt: [],
+        inboundRoute: [],
+        chargeUserId: [],
+    });
 
-     constructor(
+    constructor(
         protected route: ActivatedRoute,
         protected router: Router,
-        public fb : FormBuilder,
-        private mainComponent: MainContentComponent,        
+        public fb: FormBuilder,
+        private mainComponent: MainContentComponent,
         private workService: WorkService,
         private customerService: CustomerService,
         private resolver: ComponentFactoryResolver
-    ){
+    ) {
         super();
 
         //최초 가지고 와야할 코드들..
         this.route.data
-        .subscribe(data => {
-            let commonCode = <CommonCodeItem>data.commonCode;
+            .subscribe(data => {
+                let commonCode = <CommonCodeItem>data.commonCode;
 
-            this.workTypeCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
-            for (let code of commonCode.getWorkTypeCodeList()) {
-                this.workTypeCodeList.push(code);
-            }
+                this.workTypeCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+                for (let code of commonCode.getWorkTypeCodeList()) {
+                    this.workTypeCodeList.push(code);
+                }
 
-            this.locationCodeList = [{codeId:'', codeName:'선택', childCodeList:null}];
-            for (let code of commonCode.getLocationCodeList()) {
-                this.locationCodeList.push(code);
-            }
+                this.locationCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+                for (let code of commonCode.getLocationCodeList()) {
+                    this.locationCodeList.push(code);
+                }
 
-            this.targetCodeList = commonCode.getTargetCodeList();
-
-            this.workUserList = [{codeId:'', codeName:'선택', childCodeList:null}];
-            // for (let code of commonCode.getWorkUserList()) {
-            //     this.workUserList.push(code);
-            // }
-        });
+                this.targetCodeList = commonCode.getTargetCodeList();
+            });
 
 
     }
@@ -108,7 +102,7 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
         observable.subscribe(
             response => {
                 if (response.result) {
-                    this.customerInfoList = [{codeId:'', codeName:'선택', childCodeList:null}];
+                    this.customerInfoList = [{ codeId: '', codeName: '선택', childCodeList: null }];
                     if (response.result.list) {
                         for (let code of response.result.list) {
                             this.customerInfoList.push(code);
@@ -132,18 +126,54 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
             }
         )
 
-        if (this.route.snapshot.params['type'] == 'create'){
+
+        let workUserStatus = "";
+        //등록할 땐 현재 유효한 사용자 리스트만 보여준다.
+        if (this.isCreateMode){
+            workUserStatus = "0";
+        }
+
+        //담당자 리스트 가지고 오기
+        let workUserObservable = this.workService.getWorkUserList(workUserStatus);
+        workUserObservable.subscribe(
+            response => {
+                if (response.result) {
+                    this.workUserList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+                    if (response.result.list) {
+                        for (let code of response.result.list) {
+                            this.workUserList.push(code);
+                        }
+
+                        this.workUserSelectBox.setOptionList(this.workUserList);
+                    }
+                } else {
+                    this.workUserList.length = 0;
+                }
+            },
+            error => {
+                if (error) {
+                    if (error.result && error.result.errorMsg) {
+                        alert('담당자 정보를 가지고 올 수 없습니다.\n' + error.result.errorMsg);
+                    } else {
+                        alert('담당자 정보를 가지고 올 수 없습니다.\n' + error);
+                    }
+
+                }
+            }
+        )
+
+        if (this.route.snapshot.params['type'] == 'create') {
             this.isCreateMode = true;
-            this.mainComponent.menu={
-                category : "업무관리",
-                menu : "업무요청 > 등록"
-            };  
+            this.mainComponent.menu = {
+                category: "업무관리",
+                menu: "업무요청 > 등록"
+            };
         } else {
             this.workRequestId = this.route.snapshot.params['workRequestId'];
 
-            this.mainComponent.menu={
-                category : "업무관리",
-                menu : "업무요청 > 등록"
+            this.mainComponent.menu = {
+                category: "업무관리",
+                menu: "업무요청 > 등록"
             };
             this.submitTitle = "저장";
 
@@ -151,9 +181,9 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
             let observable = this.workService.getWorkRequestDetail(this.workRequestId);
             observable.subscribe(
                 response => {
-                    if(response.workRequestInfo){
+                    if (response.workRequestInfo) {
                         this.workRequestInfo = response.workRequestInfo;
-                        
+
                         this.insertForm.controls['workRequestId'].setValue(this.workRequestInfo.workRequestId, {});
                         this.insertForm.controls['customerId'].setValue(this.workRequestInfo.customerId, {});
                         this.insertForm.controls['workTypeCode'].setValue(this.workRequestInfo.workTypeCode, {});
@@ -186,69 +216,73 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
                     }
                 },
                 error => {
-                    if(error){
-                        alert('data를 가지고 올 수 없습니다.\n'+error.result.errorMsg);
+                    if (error) {
+                        alert('data를 가지고 올 수 없습니다.\n' + error.result.errorMsg);
                     }
                 },
             )
         }
-        
+
     }
 
-    goList(){
+    goList() {
         this.router.navigate(['/works/request/list']);
     }
 
-    save(){
+    save() {
 
-        if(!confirm('저장하시겠습니까?')){
-             return false;
+        if (!confirm('저장하시겠습니까?')) {
+            return false;
         }
+        let formData = null;
+        
+        let customerId = this.customerSelectBox.getSelectedValue();
+        let workTypeCode = this.workTypeCodeSelectBox.getSelectedValue();
+        let locationCode = this.locationSelectBox.getSelectedValue();
+        let chargeUserId = this.workUserSelectBox.getSelectedValue();
+        let targetCodes;
 
-        let formData = this.insertForm.value;
-        let mFormData:FormData = new FormData();
 
-        mFormData.append("customerId", formData.customerId);
-        mFormData.append("corpName", formData.corpName);
-        mFormData.append("corpRegNum", formData.corpRegNum);
-        mFormData.append("representPersonName", formData.representPersonName);
-        mFormData.append("address", formData.address);
-        mFormData.append("businessCondition", formData.businessCondition);
-        mFormData.append("businessItem", formData.businessItem);
-        mFormData.append("homepageUrl", formData.homepageUrl);
+        
+
+        this.insertForm.controls['customerId'].setValue(customerId, {});
+        this.insertForm.controls['workTypeCode'].setValue(workTypeCode, {});
+        this.insertForm.controls['locationCode'].setValue(locationCode, {});
+        this.insertForm.controls['chargeUserId'].setValue(chargeUserId, {});
+        this.insertForm.controls['targetCodes'].setValue(targetCodes, {});
 
         if (this.isCreateMode) {
-            this.insertWorkRequest(mFormData);
+            this.registWorkRequest(this.insertForm.value);
         } else {
-            this.updateWorkRequest(mFormData);
+            this.updateWorkRequest(this.insertForm.value);
         }
 
     }
 
-    public pageChanged(event:any):void {
+    public pageChanged(event: any): void {
         super.setPage(event);
     }
 
-    insertWorkRequest (formData : any) {
+    registWorkRequest(formData: any) {
         let observable = this.workService.registWorkRequest(formData);
         observable.subscribe(
             response => {
-                if(response.success){
+                if (response.success) {
                     alert("저장되었습니다.");
                     this.goList();
-                }else{
-                    alert("저장에 실패하였습니다.:\n"+response.errorMsg);
+                } else {
+                    alert("저장에 실패하였습니다.:\n" + response.errorMsg);
                 }
             },
             error => {
-                if(error){
-                    alert('저장에 실패하였습니다.\n'+error.result.errorMsg);
+                if (error) {
+                    alert('저장에 실패하였습니다.\n' + error.result.errorMsg);
                 }
             }
         )
     }
 
-    updateWorkRequest (formData : any) {
+    updateWorkRequest(formData: any) {
 
         // if(formData == this.initFormData){
         //     alert('변경 사항이 없습니다.');
@@ -257,15 +291,15 @@ export class WorkRequestDetailComponent extends CommonComponent implements OnIni
         let observable = this.workService.updateWorkRequest(formData);
         observable.subscribe(
             response => {
-                if(response.success){
+                if (response.success) {
                     alert("저장되었습니다.");
-                }else{
-                    alert("저장에 실패하였습니다.:\n"+response.errorMsg);
+                } else {
+                    alert("저장에 실패하였습니다.:\n" + response.errorMsg);
                 }
             },
             error => {
-                if(error){
-                    alert('저장에 실패하였습니다.\n'+error.result.errorMsg);
+                if (error) {
+                    alert('저장에 실패하였습니다.\n' + error.result.errorMsg);
                 }
             }
         )
