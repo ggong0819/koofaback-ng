@@ -44,11 +44,19 @@ var WorkRequestListComponent = (function (_super) {
             menu: "업무요청관리"
         };
         _this.searchTypeOptions = [
-            { id: "corpName", name: '상호' },
-            { id: "representPersonName", name: '주제' },
-            { id: "corpRegNum", name: '업무번호' },
-            { id: "personName", name: '담당자명' }
+            { id: "corpName", name: '거래처명' },
+            { id: "subject", name: '주제' },
+            { id: "workId", name: '업무번호' },
+            { id: "personName", name: '담당자명' },
+            { id: "location", name: '지역' },
         ];
+        //최초 가지고 와야할 코드들..
+        _this.route.data
+            .subscribe(function (data) {
+            var commonCode = data.commonCode;
+            _this.workTypeCodeList = commonCode.getWorkTypeCodeList();
+            _this.locationCodeList = commonCode.getLocationCodeList();
+        });
         return _this;
     }
     WorkRequestListComponent.prototype.ngOnInit = function () {
@@ -85,11 +93,11 @@ var WorkRequestListComponent = (function (_super) {
     };
     WorkRequestListComponent.prototype.goDetail = function (workRequestId) {
         this.commonService.formData = this.searchForm;
-        this.router.navigate(['/works/workRequest/detail', { type: 'modify', workRequestId: workRequestId }]);
+        this.router.navigate(['/works/request/detail', { type: 'modify', workRequestId: workRequestId }]);
     };
     WorkRequestListComponent.prototype.createWorkRequest = function () {
         this.commonService.formData = this.searchForm;
-        this.router.navigate(['/works/workRequest/detail', { type: 'create' }]);
+        this.router.navigate(['/works/request/detail', { type: 'create' }]);
     };
     return WorkRequestListComponent;
 }(ListComponent_1.ListComponent));

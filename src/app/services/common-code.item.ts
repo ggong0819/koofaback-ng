@@ -1,57 +1,76 @@
-export class CommonCodeItem{
-    private locationCodeList: any = null;     //지역 코드 10004
-    private type1CodeList: any = null;     //1차구분 코드 10003
-    private type2CodeList: any = null;     //2차구분 코드 10004
-    private targetCodeList: any = null;     //대상 코드 10004
-    private userList: any = null;     //쿠퍼 유저 리스트
+export class CommonCodeItem {
+    private locationCodeList: any = null;     //지역 코드 10012
+    private workTypeCodeList: any = null;     //업무구분 코드 10007
+    private targetCodeList: any = null;     //대상 코드 10010
+    private workUserList: any = null;     //업무 담당자 리스트 (코드 없음)
+    private customerTypeCodeList: any = null;     //기관유형 코드 10008
+    private subjectCodeList: any = null;     //목적/주제 코드 10009
+    private timesCodeList: any = null;     //회차 코드 10011
 
-    public getLocationCodeList(){
+    public getLocationCodeList() {
         return this.locationCodeList;
     }
 
-    public setLocationCodeList(param:any){
+    public setLocationCodeList(param: any) {
         this.locationCodeList = param;
     }
 
-    public getType1CodeList(){
-        return this.type1CodeList;
+    public getWorkTypeCodeList() {
+        return this.workTypeCodeList;
     }
 
-    public setType1CodeList(param:any){
-        this.type1CodeList = param;
+    public setWorkTypeCodeList(param: any) {
+        this.workTypeCodeList = param;
     }
 
-    public getType2CodeList(){
-        return this.type2CodeList;
-    }
-
-    public setType2CodeList(param:any){
-        this.type2CodeList = param;
-    }
-
-    public getTargetCodeList(){
+    public getTargetCodeList() {
         return this.targetCodeList;
     }
 
-    public setTargetCodeList(param:any){
+    public setTargetCodeList(param: any) {
         this.targetCodeList = param;
     }
 
-    public getUserList(){
-        return this.userList;
+    public getWorkUserList() {
+        return this.workUserList;
     }
 
-    public setUserList(param:any){
-        this.userList = param;
+    public setWorkUserList(param: any) {
+        this.workUserList = param;
     }
 
+    public getCustomerTypeCodeList() {
+        return this.customerTypeCodeList;
+    }
 
-    public setCodeDataFromJson(jsonData : any){
+    public setCustomerTypeCodeList(param: any) {
+        this.customerTypeCodeList = param;
+    }
+
+    public getSubjectCodeList() {
+        return this.subjectCodeList;
+    }
+
+    public setSubjectCodeList(param: any) {
+        this.subjectCodeList = param;
+    }
+
+    public getTimesCodeList() {
+        return this.timesCodeList;
+    }
+
+    public setTimesCodeList(param: any) {
+        this.timesCodeList = param;
+    }
+
+    public setCodeDataFromJson(jsonData: any) {
         this.locationCodeList = jsonData.locationCodeList;
-        this.type1CodeList = jsonData.type1CodeList;
-        this.type2CodeList = jsonData.type2CodeList;
+        this.workTypeCodeList = jsonData.workTypeCodeList;
         this.targetCodeList = jsonData.targetCodeList;
-        this.userList = jsonData.userList;
+        this.workUserList = jsonData.workUserList;
+        this.customerTypeCodeList = jsonData.customerTypeCodeList;
+        this.subjectCodeList = jsonData.subjectCodeList;
+        this.timesCodeList = jsonData.timesCodeList;
     }
 
 }

@@ -42,6 +42,9 @@ var CustomerService = (function (_super) {
     CustomerService.prototype.registCustomer = function (param) {
         return _super.prototype.reqPostPart.call(this, '/customer/regist.ajax', param, this.formHeaders);
     };
+    CustomerService.prototype.getAllCustomerList = function () {
+        return _super.prototype.reqPost.call(this, '/customer/allList.ajax', null, this.jsonHeaders);
+    };
     CustomerService.prototype.jwt = function () {
         // create authorization header with jwt token
         var currentCustomer = JSON.parse(localStorage.getItem('currentCustomer'));

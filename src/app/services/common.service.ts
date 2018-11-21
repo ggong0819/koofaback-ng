@@ -33,18 +33,25 @@ export class CommonService{
             res => {
                 //아래 공통 코드 추가/삭제/수정시 common-resolver.service.ts에도 같이 수정해야 합니다.
                 for (let base of res.result){
-                    switch(base.code_base_id){
-                        case 10001: //지역
-                            this.commonCode.setLocationCodeList(base.detailList);
-                        break;
-                        // case 10024: //[교재관리]출판사리스트
-                        //     this.commonCode.setTextBookPubCodeList(base.detailList);
-                        // break;
-                        // case 10025: //실력단원평가_평가회차 정보
-                        //     this.commonCode.setEvalOrderCodeList(base.detailList);
-                        // break;
-                        // case 10026: //실력단원평가_난이도 정보
-                        //     this.commonCode.setEvalLevelCodeList(base.detailList);
+                    switch(base.codeId){
+                        case '10012': //지역
+                            this.commonCode.setLocationCodeList(base.childCodeList);
+                            break;
+                        case '10007': //업무구분
+                            this.commonCode.setWorkTypeCodeList(base.childCodeList);
+                            break;
+                        case '10010': //대상
+                            this.commonCode.setTargetCodeList(base.childCodeList);
+                            break;
+                        case '10008': //기관유형
+                            this.commonCode.setCustomerTypeCodeList(base.childCodeList);
+                            break;
+                        case '10009': //목적/주제
+                            this.commonCode.setSubjectCodeList(base.childCodeList);
+                            break;
+                        case '10011': //회차
+                            this.commonCode.setTimesCodeList(base.childCodeList);
+                            break;
                     }
                 }
                 

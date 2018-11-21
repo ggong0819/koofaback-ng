@@ -6,6 +6,7 @@ export class Customer {
   public corpRegNum: string;
   public representPersonName : string;
   public address: string;
+  public customerTypeCode: string;
   public businessCondition: string;
   public businessItem: string;
   public homepageUrl: number;

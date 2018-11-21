@@ -28,6 +28,7 @@ var main_content_component_1 = require("../../layout/main-content.component");
 var person_component_1 = require("./person.component");
 var person_directive_1 = require("./person.directive");
 var config_1 = require("../../config/config");
+var SelectBoxComponent_1 = require("../../common/components/selectbox/SelectBoxComponent");
 var CustomerDetailComponent = (function (_super) {
     __extends(CustomerDetailComponent, _super);
     function CustomerDetailComponent(route, router, fb, mainComponent, customerService, resolver) {
@@ -41,12 +42,14 @@ var CustomerDetailComponent = (function (_super) {
         _this.customerInfo = {};
         _this.checkedDuplication = false;
         _this.isCreateMode = false;
+        _this.customerTypeCodeList = [];
+        _this.customerTypeCodeOptions = [];
         _this.personList = [];
         _this.personBoxIndex = -1;
         _this.submitTitle = '등록';
-        // @ViewChild('fileInput') public fileInput : any;
         _this.insertForm = _this.fb.group({
             customerId: [],
+            customerTypeCode: [],
             corpName: [],
             corpRegNum: [],
             representPersonName: [],
@@ -55,10 +58,21 @@ var CustomerDetailComponent = (function (_super) {
             businessItem: [],
             homepageUrl: []
         });
+        //최초 가지고 와야할 코드들..
+        _this.route.data
+            .subscribe(function (data) {
+            var commonCode = data.commonCode;
+            _this.customerTypeCodeList = [{ codeId: '', codeName: '선택', childCodeList: null }];
+            for (var _i = 0, _a = commonCode.getCustomerTypeCodeList(); _i < _a.length; _i++) {
+                var code = _a[_i];
+                _this.customerTypeCodeList.push(code);
+            }
+        });
         return _this;
     }
     CustomerDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.defaultCustomerTypeCode = "";
         if (this.route.snapshot.params['type'] == 'create') {
             this.isCreateMode = true;
             this.mainComponent.menu = {
@@ -78,6 +92,9 @@ var CustomerDetailComponent = (function (_super) {
             customerObservable.subscribe(function (response) {
                 if (response.customerInfo) {
                     _this.customerInfo = response.customerInfo;
+                    if (null != _this.customerInfo.customerTypeCode) {
+                        _this.customerTypeCodeBox.setOpionValue(_this.customerInfo.customerTypeCode);
+                    }
                     _this.insertForm.controls['customerId'].setValue(_this.customerInfo.customerId, {});
                     _this.insertForm.controls['corpName'].setValue(_this.customerInfo.corpName, {});
                     _this.insertForm.controls['corpRegNum'].setValue(_this.customerInfo.corpRegNum, {});
@@ -123,6 +140,7 @@ var CustomerDetailComponent = (function (_super) {
         }
         mFormData.append("representPersonName", formData.representPersonName);
         mFormData.append("address", formData.address);
+        mFormData.append("customerTypeCode", this.customerTypeCodeBox.getSelectedValue());
         mFormData.append("businessCondition", formData.businessCondition);
         mFormData.append("businessItem", formData.businessItem);
         mFormData.append("homepageUrl", formData.homepageUrl);
@@ -213,6 +231,10 @@ __decorate([
     core_1.ViewChild(person_directive_1.PersonDirective),
     __metadata("design:type", person_directive_1.PersonDirective)
 ], CustomerDetailComponent.prototype, "personHost", void 0);
+__decorate([
+    core_1.ViewChild('customerTypeCodeBox'),
+    __metadata("design:type", SelectBoxComponent_1.SelectBoxComponent)
+], CustomerDetailComponent.prototype, "customerTypeCodeBox", void 0);
 CustomerDetailComponent = __decorate([
     core_1.Component({
         moduleId: module.id,

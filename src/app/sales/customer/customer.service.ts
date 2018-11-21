@@ -35,6 +35,10 @@ export class CustomerService extends NetService{
     return super.reqPostPart('/customer/regist.ajax', param, this.formHeaders);
   }
 
+  getAllCustomerList(){
+    return super.reqPost('/customer/allList.ajax', null, this.jsonHeaders);
+  }
+
   private jwt() {
       // create authorization header with jwt token
       let currentCustomer = JSON.parse(localStorage.getItem('currentCustomer'));

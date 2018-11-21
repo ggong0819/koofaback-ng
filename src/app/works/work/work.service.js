@@ -46,7 +46,7 @@ var WorkService = (function (_super) {
         return _super.prototype.reqPost.call(this, '/work/deleteWork.ajax', param, this.formHeaders);
     };
     WorkService.prototype.searchWorkRequest = function (param) {
-        return _super.prototype.reqPost.call(this, '/work/workRequestList.ajax', param, this.jsonHeaders);
+        return _super.prototype.reqPost.call(this, '/work/requestList.ajax', param, this.jsonHeaders);
     };
     WorkService.prototype.getWorkRequestDetail = function (workRequestId) {
         return _super.prototype.reqGet.call(this, '/work/workRequestDetail/' + workRequestId + '.ajax');
@@ -59,6 +59,9 @@ var WorkService = (function (_super) {
     };
     WorkService.prototype.deleteWorkRequest = function (param) {
         return _super.prototype.reqPost.call(this, '/work/deleteWorkRequest.ajax', param, this.formHeaders);
+    };
+    WorkService.prototype.getWorkUserList = function (status) {
+        return _super.prototype.reqGet.call(this, '/work/workUserList.ajax?status=' + status);
     };
     WorkService.prototype.jwt = function () {
         // create authorization header with jwt token

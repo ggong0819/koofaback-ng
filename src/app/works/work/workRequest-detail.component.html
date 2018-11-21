@@ -1,0 +1,120 @@
+<div class="row">
+    <form [formGroup]="insertForm" class="form-horizontal">
+        <input type="hidden" formControlName="workRequestId" value="{{workRequestInfo.workRequestId}}">
+        <input type="hidden" formControlName="customerId" value="{{workRequestInfo.customerId}}">
+        <input type="hidden" formControlName="workTypeCode" value="{{workRequestInfo.workTypeCode}}">
+        <input type="hidden" formControlName="locationCode" value="{{workRequestInfo.locationCode}}">
+        <input type="hidden" formControlName="targetCodes" value="{{workRequestInfo.targetCodes}}">
+        <input type="hidden" formControlName="chargeUserId" value="{{workRequestInfo.chargeUserId}}">
+    <div class="col-xs-12">
+        <div id="boxDiv1" class="box">
+            <div class="box-header">
+                <div class="help-block pull-left">*필수입력</div>
+            </div>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">거래처</th>
+                            <td colspan="3" class="col-sm-11">
+                                <options-selector #customerBox *ngIf="customerInfoList != null" [cssClass]="'empty'" [inputCodeList]="customerInfoList" [defaultOptionValue]="''"></options-selector>
+                            </td>
+                        </tr>
+
+                        <tr role="row">
+                            <th rowspan="7" class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">시행관련</th>
+                        </tr>
+
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">업무구분</th>
+                            <td colspan="2" class="col-sm-10">
+                                <options-selector #workTypeCodeBox *ngIf="workTypeCodeList != null" [cssClass]="'empty'" [inputCodeList]="workTypeCodeList"  [defaultOptionValue]="''"></options-selector>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">주제</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="subject" value="{{workRequestInfo.subject}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="hopeDt" value="{{workRequestInfo.hopeDt}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">시행날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="executeDt" value="{{workRequestInfo.executeDt}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">장소</th>
+                            <td colspan="2" class="col-sm-10">
+                                <options-selector #locationCodeBox *ngIf="locationCodeList != null" [cssClass]="'empty'" [inputCodeList]="locationCodeList" [defaultOptionValue]="''"></options-selector>
+                                <br/>
+                                <span>구체적 장소</span>
+                                <input type="text" class="form-control" formControlName="locationDetail" value="{{workRequestInfo.locationDetail}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">대상</th>
+                            <td colspan="2" class="col-sm-10">
+                                <ng-container *ngIf="null != targetCodeList">
+                                    <span *ngFor="let item of targetCodeList;let i = index;" style="margin-left:10px;">
+                                        <input type="checkbox" value="{{item.codeId}}"/> {{item.codeName}}
+                                    </span>
+                                </ng-container>
+                            </td>
+                        </tr>
+
+                        <tr role="row">
+                            <th rowspan="6" class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">요청사항</th>
+                        </tr>
+
+
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">인원</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="participantCount" value="{{workRequestInfo.participantCount}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">예산</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="budget" value="{{workRequestInfo.budget}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">접수날짜</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="requestDt" value="{{workRequestInfo.requestDt}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">접수경로</th>
+                            <td colspan="2" class="col-sm-10">
+                                <input type="text" class="form-control" formControlName="inboundRoute" value="{{workRequestInfo.inboundRoute}}"/>
+                            </td>
+                        </tr>
+                        <tr role="row">
+                                <th class="col-sm-1 text-center odd" style="vertical-align: middle; background-color:#f9f9f9;">담당자</th>
+                                <td colspan="2" class="col-sm-10">
+                                        <options-selector #workUserBox *ngIf="workUserList != null" [cssClass]="'empty'" [inputCodeList]="workUserList" [defaultOptionValue]="''"></options-selector>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+                <reg-modf *ngIf="!isCreateMode && workRequestInfo != null" [info]="workRequestInfo"></reg-modf>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button (click)="save()" type="button" class="btn btn-primary">{{submitTitle}}</button>
+                    <button (click)="goList()" type="button" class="btn btn-default">목록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>

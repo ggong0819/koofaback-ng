@@ -1,14 +1,14 @@
 import { ModuleWithProviders }    from '@angular/core';
 import { Routes, RouterModule }   from '@angular/router';
 
-import { WorkListComponent, WorkRequestListComponent }    from './work/work.index';
+import { WorkListComponent, WorkRequestListComponent, WorkRequestDetailComponent }    from './work/work.index';
 
 const WorksRoutes: Routes = [
-  { path: 'works',
+  { path: 'request',
     children:[
-      { path: '', redirectTo:"requestList"},
-      { path: 'requestList', component: WorkRequestListComponent },
-      { path: 'list', component: WorkListComponent },
+      { path: '', redirectTo:"list"},
+      { path: 'list', component: WorkRequestListComponent },
+      { path: 'detail', component: WorkRequestDetailComponent },
     ]
   },
 

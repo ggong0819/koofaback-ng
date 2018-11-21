@@ -3,11 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = require("@angular/router");
 var work_index_1 = require("./work/work.index");
 var WorksRoutes = [
-    { path: 'works',
+    { path: 'request',
         children: [
-            { path: '', redirectTo: "requestList" },
-            { path: 'requestList', component: work_index_1.WorkRequestListComponent },
-            { path: 'list', component: work_index_1.WorkListComponent },
+            { path: '', redirectTo: "list" },
+            { path: 'list', component: work_index_1.WorkRequestListComponent },
+            { path: 'detail', component: work_index_1.WorkRequestDetailComponent },
         ]
     },
 ];
